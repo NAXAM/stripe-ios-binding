@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Required elements-->
+        <id>Naxam.Stripe.iOS</id>
+        <version>10.1.0</version>
+        <description>Xamarin Binding Library - Stripe iOS SDK</description>
+        <authors>Vu Duc Tuyen</authors>
+        <owners>NAXAM CO.,LTD</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <title>Naxam - Stripe iOS SDK</title>
+        <releaseNotes>Stripe iOS SDK v10.1.0</releaseNotes>
+        <summary>Xamarin Binding Library - Stripe iOS SDK</summary>
+        <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+        <projectUrl>https://github.com/NAXAM/xios-stripe</projectUrl>
+        <copyright>Copyright (c) 2017 NAXAM</copyright>
+        <tags>Xamarin.iOS, stripe</tags>
+    </metadata>
+    <!-- Optional 'files' node -->
+    <files>
+        <file src="Naxam.Stripe.iOS/bin/Release/Naxam.Stripe.iOS.dll" target="lib/Xamarin.iOS10/Naxam.Stripe.iOS.dll" />
+    </files>
+</package>
