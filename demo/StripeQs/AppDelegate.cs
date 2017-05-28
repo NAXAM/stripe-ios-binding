@@ -21,7 +21,7 @@ namespace StripeQs
         {
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
-            STPPaymentConfiguration.SharedConfiguration().PublishableKey = "YOUR KEY WILL GO HERE";
+            STPPaymentConfiguration.SharedConfiguration().PublishableKey = "";
             throw new System.NotSupportedException("Please enter your key");
 
             return true;
