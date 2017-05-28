@@ -1,0 +1,1 @@
+sharpie bind -sdk iphoneos10.3 -f ./frameworks/Stripe.framework -o ./bindings/Stripe -n StripeSdk
