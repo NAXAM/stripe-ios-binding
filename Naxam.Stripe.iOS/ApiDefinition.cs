@@ -14,6 +14,8 @@ namespace StripeSdk
     partial interface ISTPFormEncodable {}
     partial interface ISTPPaymentMethod {}
     partial interface ISTPSourceProtocol {}
+    partial interface ISTPBackendAPIAdapter {}
+    partial interface ISTPPaymentContextDelegate { }
 
     // typedef void (^STPVoidBlock)();
     delegate void STPVoidBlock();
@@ -49,7 +51,7 @@ namespace StripeSdk
         [Abstract]
         [Export("decodedObjectFromAPIResponse:")]
         [return: NullAllowed]
-        STPAPIResponseDecodable DecodedObjectFromAPIResponse([NullAllowed] NSDictionary response);
+        ISTPAPIResponseDecodable DecodedObjectFromAPIResponse([NullAllowed] NSDictionary response);
 
         // @required @property (readonly, copy, nonatomic) NSDictionary * _Nonnull allResponseFields;
         [Abstract]
@@ -438,7 +440,7 @@ namespace StripeSdk
         // +(instancetype _Nonnull)customerWithStripeID:(NSString * _Nonnull)stripeID defaultSource:(id<STPSourceProtocol> _Nullable)defaultSource sources:(NSArray<id<STPSourceProtocol>> * _Nonnull)sources;
         [Static]
         [Export("customerWithStripeID:defaultSource:sources:")]
-        STPCustomer CustomerWithStripeID(string stripeID, [NullAllowed] STPSourceProtocol defaultSource, STPSourceProtocol[] sources);
+        STPCustomer CustomerWithStripeID(string stripeID, [NullAllowed] ISTPSourceProtocol defaultSource, ISTPSourceProtocol[] sources);
 
         // @property (readonly, copy, nonatomic) NSString * _Nonnull stripeID;
         [Export("stripeID")]
@@ -446,11 +448,11 @@ namespace StripeSdk
 
         // @property (readonly, nonatomic) id<STPSourceProtocol> _Nullable defaultSource;
         [NullAllowed, Export("defaultSource")]
-        STPSourceProtocol DefaultSource { get; }
+        ISTPSourceProtocol DefaultSource { get; }
 
         // @property (readonly, nonatomic) NSArray<id<STPSourceProtocol>> * _Nonnull sources;
         [Export("sources")]
-        STPSourceProtocol[] Sources { get; }
+        ISTPSourceProtocol[] Sources { get; }
     }
 
     // @interface STPCustomerDeserializer : NSObject
@@ -490,12 +492,12 @@ namespace StripeSdk
         // @required -(void)attachSourceToCustomer:(id<STPSourceProtocol> _Nonnull)source completion:(STPErrorBlock _Nonnull)completion;
         [Abstract]
         [Export("attachSourceToCustomer:completion:")]
-        void AttachSourceToCustomer(STPSourceProtocol source, STPErrorBlock completion);
+        void AttachSourceToCustomer(ISTPSourceProtocol source, STPErrorBlock completion);
 
         // @required -(void)selectDefaultCustomerSource:(id<STPSourceProtocol> _Nonnull)source completion:(STPErrorBlock _Nonnull)completion;
         [Abstract]
         [Export("selectDefaultCustomerSource:completion:")]
-        void SelectDefaultCustomerSource(STPSourceProtocol source, STPErrorBlock completion);
+        void SelectDefaultCustomerSource(ISTPSourceProtocol source, STPErrorBlock completion);
     }
 
     // @protocol STPPaymentMethod <NSObject>
@@ -1249,11 +1251,11 @@ namespace StripeSdk
     {
         // -(instancetype _Nonnull)initWithAPIAdapter:(id<STPBackendAPIAdapter> _Nonnull)apiAdapter;
         [Export("initWithAPIAdapter:")]
-        IntPtr Constructor(STPBackendAPIAdapter apiAdapter);
+        IntPtr Constructor(ISTPBackendAPIAdapter apiAdapter);
 
         // -(instancetype _Nonnull)initWithAPIAdapter:(id<STPBackendAPIAdapter> _Nonnull)apiAdapter configuration:(STPPaymentConfiguration * _Nonnull)configuration theme:(STPTheme * _Nonnull)theme;
         [Export("initWithAPIAdapter:configuration:theme:")]
-        IntPtr Constructor(STPBackendAPIAdapter apiAdapter, STPPaymentConfiguration configuration, STPTheme theme);
+        IntPtr Constructor(ISTPBackendAPIAdapter apiAdapter, STPPaymentConfiguration configuration, STPTheme theme);
 
         // @property (readonly, nonatomic) id<STPBackendAPIAdapter> _Nonnull apiAdapter;
         [Export("apiAdapter")]
