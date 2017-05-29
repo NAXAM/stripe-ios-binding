@@ -3,13 +3,13 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Stripe.iOS</id>
-        <version>10.1.0.2</version>
+        <version>10.1.0.3</version>
         <description>Xamarin Binding Library - Stripe iOS SDK</description>
         <authors>Vu Duc Tuyen</authors>
         <owners>NAXAM CO.,LTD</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Naxam - Stripe iOS SDK</title>
-        <releaseNotes>Stripe iOS SDK v10.1.0</releaseNotes>
+        <releaseNotes>Stripe iOS SDK v10.1.0/Fix issue on generated protocol</releaseNotes>
         <summary>Xamarin Binding Library - Stripe iOS SDK</summary>
         <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>https://github.com/NAXAM/xios-stripe</projectUrl>
