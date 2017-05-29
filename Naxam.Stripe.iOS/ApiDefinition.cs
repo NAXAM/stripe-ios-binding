@@ -1238,11 +1238,11 @@ namespace StripeSdk
     {
         // @property (readonly, nonatomic) id<STPSourceProtocol> _Nonnull source;
         [Export("source")]
-        STPSourceProtocol Source { get; }
+        ISTPSourceProtocol Source { get; }
 
         // -(instancetype _Nonnull)initWithSource:(id<STPSourceProtocol> _Nonnull)source;
         [Export("initWithSource:")]
-        IntPtr Constructor(STPSourceProtocol source);
+        IntPtr Constructor(ISTPSourceProtocol source);
     }
 
     // @interface STPPaymentContext : NSObject
@@ -1259,7 +1259,7 @@ namespace StripeSdk
 
         // @property (readonly, nonatomic) id<STPBackendAPIAdapter> _Nonnull apiAdapter;
         [Export("apiAdapter")]
-        STPBackendAPIAdapter ApiAdapter { get; }
+        ISTPBackendAPIAdapter ApiAdapter { get; }
 
         // @property (readonly, nonatomic) STPPaymentConfiguration * _Nonnull configuration;
         [Export("configuration")]
@@ -1291,11 +1291,11 @@ namespace StripeSdk
 
         // @property (readonly, nonatomic) id<STPPaymentMethod> _Nullable selectedPaymentMethod;
         [NullAllowed, Export("selectedPaymentMethod")]
-        STPPaymentMethod SelectedPaymentMethod { get; }
+        ISTPPaymentMethod SelectedPaymentMethod { get; }
 
         // @property (readonly, nonatomic) NSArray<id<STPPaymentMethod>> * _Nullable paymentMethods;
         [NullAllowed, Export("paymentMethods")]
-        STPPaymentMethod[] PaymentMethods { get; }
+        ISTPPaymentMethod[] PaymentMethods { get; }
 
         // @property (readonly, nonatomic) PKShippingMethod * _Nullable selectedShippingMethod;
         [NullAllowed, Export("selectedShippingMethod")]
@@ -1418,7 +1418,7 @@ namespace StripeSdk
         // @required -(void)paymentMethodsViewController:(STPPaymentMethodsViewController * _Nonnull)paymentMethodsViewController didSelectPaymentMethod:(id<STPPaymentMethod> _Nonnull)paymentMethod;
         [Abstract]
         [Export("paymentMethodsViewController:didSelectPaymentMethod:")]
-        void PaymentMethodsViewController(STPPaymentMethodsViewController paymentMethodsViewController, STPPaymentMethod paymentMethod);
+        void PaymentMethodsViewController(STPPaymentMethodsViewController paymentMethodsViewController, ISTPPaymentMethod paymentMethod);
 
         // @required -(void)paymentMethodsViewController:(STPPaymentMethodsViewController * _Nonnull)paymentMethodsViewController didFailToLoadWithError:(NSError * _Nonnull)error;
         [Abstract]
