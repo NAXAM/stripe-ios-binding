@@ -57,6 +57,11 @@ namespace StripeSdk
 		[Verify (PlatformInvoke)]
 		static extern void linkSTPAPIClientApplePayCategory ();
 
+		// extern void linkNSErrorCategory ();
+		[DllImport ("__Internal")]
+		[Verify (PlatformInvoke)]
+		static extern void linkNSErrorCategory ();
+
 		// extern void linkUINavigationBarThemeCategory ();
 		[DllImport ("__Internal")]
 		[Verify (PlatformInvoke)]
@@ -196,6 +201,7 @@ namespace StripeSdk
 		CardError = 70,
 		CancellationError = 80,
 		CheckoutUnknownError = 5000,
-		CheckoutTooManyAttemptsError = 5001
+		CheckoutTooManyAttemptsError = 5001,
+		CustomerContextMissingKeyProviderError = 30000
 	}
 }
