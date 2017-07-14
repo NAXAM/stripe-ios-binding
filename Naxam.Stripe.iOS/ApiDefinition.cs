@@ -1188,11 +1188,11 @@ namespace StripeSdk
 
 		// -(BOOL)becomeFirstResponder;
 		[Export("becomeFirstResponder")]
-		bool BecomeFirstResponder { get; }
+		bool BecomeFirstResponder();
 
 		// -(BOOL)resignFirstResponder;
 		[Export("resignFirstResponder")]
-		bool ResignFirstResponder { get; }
+		bool ResignFirstResponder();
 
 		// -(void)clear;
 		[Export("clear")]
@@ -1996,62 +1996,62 @@ namespace StripeSdk
 		// +(NSError * _Nonnull)stp_genericConnectionError;
 		[Static]
 		[Export("stp_genericConnectionError")]
-		NSError StpGenericConnectionError { get; }
+		NSError StpGenericConnectionError();
 
 		// +(NSError * _Nonnull)stp_genericFailedToParseResponseError;
 		[Static]
 		[Export("stp_genericFailedToParseResponseError")]
-		NSError StpGenericFailedToParseResponseError { get; }
+		NSError StpGenericFailedToParseResponseError();
 
 		// -(BOOL)stp_isUnknownCheckoutError;
         [Static]
 		[Export("stp_isUnknownCheckoutError")]
-		bool StpIsUnknownCheckoutError { get; }
+		bool StpIsUnknownCheckoutError();
 
 		// -(BOOL)stp_isURLSessionCancellationError;
         [Static]
 		[Export("stp_isURLSessionCancellationError")]
-		bool StpIsURLSessionCancellationError { get; }
+		bool StpIsURLSessionCancellationError();
 
 		// +(NSString * _Nonnull)stp_cardErrorInvalidNumberUserMessage;
 		[Static]
 		[Export("stp_cardErrorInvalidNumberUserMessage")]
-		string StpCardErrorInvalidNumberUserMessage { get; }
+		string StpCardErrorInvalidNumberUserMessage();
 
 		// +(NSString * _Nonnull)stp_cardInvalidCVCUserMessage;
 		[Static]
 		[Export("stp_cardInvalidCVCUserMessage")]
-		string StpCardInvalidCVCUserMessage { get; }
+		string StpCardInvalidCVCUserMessage();
 
 		// +(NSString * _Nonnull)stp_cardErrorInvalidExpMonthUserMessage;
 		[Static]
 		[Export("stp_cardErrorInvalidExpMonthUserMessage")]
-		string StpCardErrorInvalidExpMonthUserMessage { get; }
+		string StpCardErrorInvalidExpMonthUserMessage();
 
 		// +(NSString * _Nonnull)stp_cardErrorInvalidExpYearUserMessage;
 		[Static]
 		[Export("stp_cardErrorInvalidExpYearUserMessage")]
-		string StpCardErrorInvalidExpYearUserMessage { get; }
+		string StpCardErrorInvalidExpYearUserMessage();
 
 		// +(NSString * _Nonnull)stp_cardErrorExpiredCardUserMessage;
 		[Static]
 		[Export("stp_cardErrorExpiredCardUserMessage")]
-		string StpCardErrorExpiredCardUserMessage { get; }
+		string StpCardErrorExpiredCardUserMessage();
 
 		// +(NSString * _Nonnull)stp_cardErrorDeclinedUserMessage;
 		[Static]
 		[Export("stp_cardErrorDeclinedUserMessage")]
-		string StpCardErrorDeclinedUserMessage { get; }
+		string StpCardErrorDeclinedUserMessage();
 
 		// +(NSString * _Nonnull)stp_cardErrorProcessingErrorUserMessage;
 		[Static]
 		[Export("stp_cardErrorProcessingErrorUserMessage")]
-		string StpCardErrorProcessingErrorUserMessage { get; }
+		string StpCardErrorProcessingErrorUserMessage();
 
 		// +(NSString * _Nonnull)stp_unexpectedErrorMessage;
 		[Static]
 		[Export("stp_unexpectedErrorMessage")]
-		string StpUnexpectedErrorMessage { get; }
+		string StpUnexpectedErrorMessage();
 	}
 
 	// @interface Stripe_Theme (UINavigationBar)
