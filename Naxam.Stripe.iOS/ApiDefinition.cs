@@ -470,7 +470,7 @@ namespace StripeSdk
 
         // @property (nonatomic, readonly, nullable) STPAddress *shippingAddress;
         [Export("shippingAddress"), NullAllowed]
-        STPAddress shippingAddress { get; }
+        STPAddress ShippingAddress { get; }
     }
 
     // @interface STPCustomerDeserializer : NSObject
@@ -722,7 +722,7 @@ namespace StripeSdk
 
         // - (void)createSourceWithPayment:(nonnull PKPayment *)payment completion:(nonnull STPSourceCompletionBlock)completion;
         [Export("createSourceWithPayment:completion:")]
-        void createSourceWithPayment(PKPayment payment, STPSourceCompletionBlock completion);
+        void CreateSourceWithPayment(PKPayment payment, STPSourceCompletionBlock completion);
     }
 
     // @interface STPApplePayPaymentMethod : NSObject <STPPaymentMethod>
@@ -1109,7 +1109,7 @@ namespace StripeSdk
         NSObject WeakDelegate { get; set; }
 
         // @property (nonatomic, copy, null_resettable) UIFont *font UI_APPEARANCE_SELECTOR;
-        [Export("font", ArgumentSemantic.Copy)]
+        [Export("font", ArgumentSemantic.Copy),]
         UIFont Font { get; set; }
 
         // @property (nonatomic, copy, null_resettable) UIColor *textColor UI_APPEARANCE_SELECTOR;

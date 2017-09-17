@@ -38,6 +38,6 @@ Thumbs.db
 
 # dotCover
 *.dotCover
-*.nupkg
+#*.nupkg
 sharpie/build
 sharpie/Pods
