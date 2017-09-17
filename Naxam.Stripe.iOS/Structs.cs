@@ -9,7 +9,7 @@ namespace StripeSdk
 	public enum STPShippingType : ulong
 	{
 		Shipping,
-		Delivery
+		Delivery 
 	}
 
 	[Native]
@@ -77,6 +77,7 @@ namespace StripeSdk
 		New,
 		Validated,
 		Verified,
+		VerificationFailed,
 		Errored
 	}
 
@@ -196,7 +197,8 @@ namespace StripeSdk
 		APIError = 60,
 		CardError = 70,
 		CancellationError = 80,
+        STPEphemeralKeyDecodingError = 1000,
 		CheckoutUnknownError = 5000,
-		CheckoutTooManyAttemptsError = 5001
+		CheckoutTooManyAttemptsError = 5001,
 	}
 }
