@@ -72,7 +72,7 @@ namespace StripeSdk
 
     // @interface STPFile : NSObject <STPAPIResponseDecodable>
     [BaseType(typeof(NSObject))]
-    interface STPFile : ISTPAPIResponseDecodable
+    interface STPFile : STPAPIResponseDecodable
     {
         // @property (readonly, nonatomic) NSString * _Nonnull fileId;
         [Export("fileId")]
@@ -239,9 +239,9 @@ namespace StripeSdk
         bool HandleStripeURLCallbackWithURL(NSUrl url);
     }
 
-    // @interface STPAddress : NSObject <STPAPIResponseDecodable>
+    // @interface STPAddress : NSObject APIResponseDecodable>
     [BaseType(typeof(NSObject))]
-    interface STPAddress : ISTPAPIResponseDecodable
+    interface STPAddress : STPAPIResponseDecodable
     {
         // @property (copy, nonatomic) NSString * _Nullable name;
         [NullAllowed, Export("name")]
@@ -345,7 +345,7 @@ namespace StripeSdk
 
     // @interface STPCardParams : NSObject <STPFormEncodable>
     [BaseType(typeof(NSObject))]
-    interface STPCardParams : ISTPFormEncodable
+    interface STPCardParams : STPFormEncodable
     {
         // @property (copy, nonatomic) NSString * _Nullable number;
         [NullAllowed, Export("number")]
@@ -449,7 +449,7 @@ namespace StripeSdk
 
     // @interface STPCustomer : NSObject
     [BaseType(typeof(NSObject))]
-    interface STPCustomer : ISTPAPIResponseDecodable
+    interface STPCustomer : STPAPIResponseDecodable
     {
         // +(instancetype _Nonnull)customerWithStripeID:(NSString * _Nonnull)stripeID defaultSource:(id<STPSourceProtocol> _Nullable)defaultSource sources:(NSArray<id<STPSourceProtocol>> * _Nonnull)sources __attribute__((deprecated));
         [Static, Deprecated(PlatformName.None, PlatformArchitecture.All, "")]
@@ -727,13 +727,13 @@ namespace StripeSdk
 
     // @interface STPApplePayPaymentMethod : NSObject <STPPaymentMethod>
     [BaseType(typeof(NSObject))]
-    interface STPApplePayPaymentMethod : ISTPPaymentMethod
+    interface STPApplePayPaymentMethod : STPPaymentMethod
     {
     }
 
     // @interface STPBankAccountParams : NSObject <STPFormEncodable>
     [BaseType(typeof(NSObject))]
-    interface STPBankAccountParams : ISTPFormEncodable
+    interface STPBankAccountParams : STPFormEncodable
     {
         // @property (copy, nonatomic) NSString * _Nullable accountNumber;
         [NullAllowed, Export("accountNumber")]
@@ -1568,7 +1568,7 @@ namespace StripeSdk
     // @interface STPSourceCardDetails : NSObject <STPAPIResponseDecodable>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPSourceCardDetails : ISTPAPIResponseDecodable
+    interface STPSourceCardDetails : STPAPIResponseDecodable
     {
         // @property (readonly, nonatomic) NSString * _Nullable last4;
         [NullAllowed, Export("last4")]
@@ -1602,7 +1602,7 @@ namespace StripeSdk
     // @interface STPSourceOwner : NSObject <STPAPIResponseDecodable>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPSourceOwner : ISTPAPIResponseDecodable
+    interface STPSourceOwner : STPAPIResponseDecodable
     {
         // @property (readonly, nonatomic) STPAddress * _Nullable address;
         [NullAllowed, Export("address")]
@@ -1640,7 +1640,7 @@ namespace StripeSdk
     // @interface STPSourceReceiver : NSObject <STPAPIResponseDecodable>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPSourceReceiver : ISTPAPIResponseDecodable
+    interface STPSourceReceiver : STPAPIResponseDecodable
     {
         // @property (readonly, nonatomic) NSString * _Nullable address;
         [NullAllowed, Export("address")]
@@ -1662,7 +1662,7 @@ namespace StripeSdk
     // @interface STPSourceRedirect : NSObject <STPAPIResponseDecodable>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPSourceRedirect : ISTPAPIResponseDecodable
+    interface STPSourceRedirect : STPAPIResponseDecodable
     {
         // @property (readonly, nonatomic) NSURL * _Nullable returnURL;
         [NullAllowed, Export("returnURL")]
@@ -1680,7 +1680,7 @@ namespace StripeSdk
     // @interface STPSourceSEPADebitDetails : NSObject <STPAPIResponseDecodable>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPSourceSEPADebitDetails : ISTPAPIResponseDecodable
+    interface STPSourceSEPADebitDetails : STPAPIResponseDecodable
     {
         // @property (readonly, nonatomic) NSString * _Nullable last4;
         [NullAllowed, Export("last4")]
@@ -1710,7 +1710,7 @@ namespace StripeSdk
     // @interface STPSourceVerification : NSObject <STPAPIResponseDecodable>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPSourceVerification : ISTPAPIResponseDecodable
+    interface STPSourceVerification : STPAPIResponseDecodable
     {
         // @property (readonly, nonatomic) NSNumber * _Nullable attemptsRemaining;
         [NullAllowed, Export("attemptsRemaining")]
@@ -1797,7 +1797,7 @@ namespace StripeSdk
 
     // @interface STPSourceParams : NSObject <STPFormEncodable, NSCopying>
     [BaseType(typeof(NSObject))]
-    interface STPSourceParams : ISTPFormEncodable, INSCopying
+    interface STPSourceParams : STPFormEncodable, INSCopying
     {
         // @property (assign, nonatomic) STPSourceType type;
         [Export("type", ArgumentSemantic.Assign)]
@@ -1888,7 +1888,7 @@ namespace StripeSdk
     // @interface STPToken : NSObject <STPAPIResponseDecodable, STPSourceProtocol>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPToken : ISTPAPIResponseDecodable, ISTPSourceProtocol
+    interface STPToken : STPAPIResponseDecodable, STPSourceProtocol
     {
         // @property (readonly, nonatomic) NSString * _Nonnull tokenId;
         [Export("tokenId")]
@@ -2011,7 +2011,7 @@ namespace StripeSdk
 
     //@interface STPCustomerContext : NSObject <STPBackendAPIAdapter>
     [BaseType(typeof(NSObject))]
-    interface STPCustomerContext : ISTPBackendAPIAdapter
+    interface STPCustomerContext : STPBackendAPIAdapter
     {
         // - (instancetype)initWithKeyProvider:(id<STPEphemeralKeyProvider>)keyProvider;
         [Export("initWithKeyProvider:")]
