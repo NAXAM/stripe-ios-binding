@@ -45,6 +45,11 @@ namespace StripeQs
             paymentContext.RequestPayment();
         }
 
+        partial void DSecureButton_TouchUpInside(Foundation.NSObject sender)
+        {
+            this.NavigationController.PushViewController(new Card3DViewController(),true);
+        }
+
         public void PaymentContext(STPPaymentContext paymentContext, NSError error)
         {
         }

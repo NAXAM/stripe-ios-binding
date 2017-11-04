@@ -1724,7 +1724,7 @@ namespace StripeSdk
     // @interface STPSource : NSObject <STPAPIResponseDecodable, STPSourceProtocol>
     [BaseType(typeof(NSObject))]
     [DisableDefaultCtor]
-    interface STPSource : ISTPAPIResponseDecodable, ISTPSourceProtocol
+    interface STPSource : STPAPIResponseDecodable, STPSourceProtocol
     {
         // @property (readonly, nonatomic) NSNumber * _Nullable amount;
         [NullAllowed, Export("amount")]

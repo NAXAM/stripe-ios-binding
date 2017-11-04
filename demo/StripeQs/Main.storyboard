@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Tgr-Jk-pCl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Tgr-Jk-pCl">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -30,11 +30,20 @@
                                     <action selector="UIButton3_TouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbw-QI-Paa">
+                                <rect key="frame" x="119.5" y="364" width="135" height="30"/>
+                                <state key="normal" title="Pay With 3D secure"/>
+                                <connections>
+                                    <action selector="DSecureButton_TouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DS4-hO-CH8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4"/>
                             <constraint firstItem="3" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="5"/>
+                            <constraint firstItem="Fbw-QI-Paa" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="15.5" id="sCw-4W-06M"/>
+                            <constraint firstItem="Fbw-QI-Paa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xXU-IC-WOK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xp4-CA-iN5"/>
@@ -48,7 +57,7 @@
             <objects>
                 <navigationController id="Tgr-Jk-pCl" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RaY-U4-Wq5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>

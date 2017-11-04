@@ -41,5 +41,16 @@
 		<key>Allow Arbitrary Loads</key>
 		<true/>
 	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>$(BUNDLE_IDENTIFIER)</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>payments-page</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

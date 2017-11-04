@@ -22,7 +22,7 @@ namespace StripeQs
             // Override point for customization after application launch.
             // If not required for your application you can safely delete this method
             STPPaymentConfiguration.SharedConfiguration().PublishableKey = "";
-            throw new System.NotSupportedException("Please enter your key");
+            //throw new System.NotSupportedException("Please enter your key");
 
             return true;
         }
@@ -56,6 +56,19 @@ namespace StripeQs
         public override void WillTerminate(UIApplication application)
         {
             // Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
+        }
+
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            bool stripeHandled = Stripe_STPURLCallbackHandlerAdditions.HandleStripeURLCallbackWithURL(null, url);
+            if (stripeHandled)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

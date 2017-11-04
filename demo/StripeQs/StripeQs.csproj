@@ -98,6 +98,7 @@
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="Card3DViewController.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -110,6 +111,10 @@
     <Compile Include="ViewController.cs" />
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Card3DViewController.cs" />
+    <Compile Include="Card3DViewController.designer.cs">
+      <DependentUpon>Card3DViewController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
