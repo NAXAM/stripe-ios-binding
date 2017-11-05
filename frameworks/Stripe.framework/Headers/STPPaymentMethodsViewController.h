@@ -33,7 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface STPPaymentMethodsViewController : STPCoreViewController
 
-
 /**
  The delegate for the view controller.
  
@@ -75,6 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
                              delegate:(id<STPPaymentMethodsViewControllerDelegate>)delegate;
 
 /**
+ Note: Instead of providing your own backend API adapter, we recommend using
+ `STPCustomerContext`, which will manage retrieving and updating a
+ Stripe customer for you. @see STPCustomerContext.h
+ 
  Initializes a new payment methods view controller without using 
  a payment context.
 
@@ -85,16 +88,11 @@ NS_ASSUME_NONNULL_BEGIN
  payment methods and save new ones.
  @param delegate      A delegate that will be notified when the payment methods 
  view controller's selection changes.
-
- @deprecated Use `initWithConfiguration:theme:customerContext:delegate:`.
- Instead of providing your own backend API adapter, you can now create an
- `STPCustomerContext`, which will manage retrieving and updating a
- Stripe customer for you. @see STPCustomerContext.h
  */
 - (instancetype)initWithConfiguration:(STPPaymentConfiguration *)configuration
                                 theme:(STPTheme *)theme
                            apiAdapter:(id<STPBackendAPIAdapter>)apiAdapter
-                             delegate:(id<STPPaymentMethodsViewControllerDelegate>)delegate DEPRECATED_MSG_ATTRIBUTE("Use `initWithConfiguration:theme:customerContext:delegate:` instead");
+                             delegate:(id<STPPaymentMethodsViewControllerDelegate>)delegate;
 
 /**
  If you've already collected some information from your user, you can set it
@@ -102,6 +100,26 @@ NS_ASSUME_NONNULL_BEGIN
  that the payment context creates.
 */
 @property (nonatomic, strong, nullable) STPUserInformation *prefilledInformation;
+
+/**
+ A view that will be placed as the footer of the view controller when it is
+ showing a list of saved payment methods to select from.
+
+ When the footer view needs to be resized, it will be sent a
+ `sizeThatFits:` call. The view should respond correctly to this method in order
+ to be sized and positioned properly.
+ */
+@property (nonatomic, strong) UIView *paymentMethodsViewControllerFooterView;
+
+/**
+ A view that will be placed as the footer of the view controller when it is
+ showing the add card view.
+
+ When the footer view needs to be resized, it will be sent a
+ `sizeThatFits:` call. The view should respond correctly to this method in order
+ to be sized and positioned properly.
+ */
+@property (nonatomic, strong) UIView *addCardViewControllerFooterView;
 
 /**
  If you're pushing `STPPaymentMethodsViewController` onto an existing 

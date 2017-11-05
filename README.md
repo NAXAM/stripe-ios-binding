@@ -21,7 +21,7 @@ Install-Package Naxam.Stripe.iOS
 
 ## Usage
 
-Plz follow its official guide [here](https://stripe.com/docs/mobile/ios).
+Plz follow the official guide [here](https://stripe.com/docs/mobile/ios).
 
 ## License
 

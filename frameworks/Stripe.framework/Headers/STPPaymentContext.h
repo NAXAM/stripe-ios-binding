@@ -50,8 +50,11 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param customerContext   The customer context the payment context will use to fetch
  and modify its Stripe customer. @see STPCustomerContext.h
- @param configuration     The configuration for the payment context to use. This lets you set your Stripe publishable API key, required billing address fields, etc. @see STPPaymentConfiguration.h
- @param theme             The theme describing the visual appearance of all UI that the payment context automatically creates for you. @see STPTheme.h
+ @param configuration     The configuration for the payment context to use. This 
+ lets you set your Stripe publishable API key, required billing address fields, etc. 
+ @see STPPaymentConfiguration.h
+ @param theme             The theme describing the visual appearance of all UI 
+ that the payment context automatically creates for you. @see STPTheme.h
  @return the newly-instantiated payment context
  */
 - (instancetype)initWithCustomerContext:(STPCustomerContext *)customerContext
@@ -59,42 +62,49 @@ NS_ASSUME_NONNULL_BEGIN
                                   theme:(STPTheme *)theme;
 
 /**
- This is a convenience initializer; it is equivalent to calling `initWithAPIAdapter:apiAdapter configuration:[STPPaymentConfiguration sharedConfiguration] theme:[STPTheme defaultTheme]`.
-
- @deprecated Use `initWithCustomerContext:`.
- Instead of providing your own backend API adapter, you can now create an
+ Note: Instead of providing your own backend API adapter, we recommend using
  `STPCustomerContext`, which will manage retrieving and updating a
  Stripe customer for you. @see STPCustomerContext.h
+
+ This is a convenience initializer; it is equivalent to calling 
+ `initWithAPIAdapter:apiAdapter configuration:[STPPaymentConfiguration sharedConfiguration] theme:[STPTheme defaultTheme]`.
  */
-- (instancetype)initWithAPIAdapter:(id<STPBackendAPIAdapter>)apiAdapter __attribute__((deprecated));
+- (instancetype)initWithAPIAdapter:(id<STPBackendAPIAdapter>)apiAdapter;
 
 /**
- Initializes a new Payment Context with the provided API adapter and configuration. After this class is initialized, you should also make sure to set its `delegate` and `hostViewController` properties.
-
- @param apiAdapter    The API adapter the payment context will use to fetch and modify its contents. You need to make a class conforming to this protocol that talks to your server. @see STPBackendAPIAdapter.h
- @param configuration The configuration for the payment context to use. This lets you set your Stripe publishable API key, required billing address fields, etc. @see STPPaymentConfiguration.h
- @param theme         The theme describing the visual appearance of all UI that the payment context automatically creates for you. @see STPTheme.h
-
- @return the newly-instantiated payment context
-
- @deprecated Use `initWithCustomerContext:configuration:theme:`.
- Instead of providing your own backend API adapter, you can now create an
+ Note: Instead of providing your own backend API adapter, we recommend using
  `STPCustomerContext`, which will manage retrieving and updating a
  Stripe customer for you. @see STPCustomerContext.h
+ 
+ Initializes a new Payment Context with the provided API adapter and configuration. 
+ After this class is initialized, you should also make sure to set its `delegate` 
+ and `hostViewController` properties.
+
+ @param apiAdapter    The API adapter the payment context will use to fetch and 
+ modify its contents. You need to make a class conforming to this protocol that 
+ talks to your server. @see STPBackendAPIAdapter.h
+ @param configuration The configuration for the payment context to use. This lets 
+ you set your Stripe publishable API key, required billing address fields, etc. 
+ @see STPPaymentConfiguration.h
+ @param theme         The theme describing the visual appearance of all UI that 
+ the payment context automatically creates for you. @see STPTheme.h
+
+ @return the newly-instantiated payment context
  */
 - (instancetype)initWithAPIAdapter:(id<STPBackendAPIAdapter>)apiAdapter
                      configuration:(STPPaymentConfiguration *)configuration
-                             theme:(STPTheme *)theme __attribute__((deprecated));
+                             theme:(STPTheme *)theme;
 
 /**
- The API adapter the payment context will use to fetch and modify its contents. You need to make a class conforming to this protocol that talks to your server. @see STPBackendAPIAdapter.h
-
- @deprecated Use `customerContext`.
- Instead of providing your own backend API adapter, you can now  create an
+ Note: Instead of providing your own backend API adapter, we recommend using
  `STPCustomerContext`, which will manage retrieving and updating a
  Stripe customer for you. @see STPCustomerContext.h
+
+ The API adapter the payment context will use to fetch and modify its contents. 
+ You need to make a class conforming to this protocol that talks to your server. 
+ @see STPBackendAPIAdapter.h
  */
-@property (nonatomic, readonly) id<STPBackendAPIAdapter> apiAdapter __attribute__((deprecated));
+@property (nonatomic, readonly) id<STPBackendAPIAdapter> apiAdapter;
 
 /**
  The configuration for the payment context to use internally. @see STPPaymentConfiguration.h
@@ -224,6 +234,25 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) UIModalPresentationStyle modalPresentationStyle;
 
 /**
+ A view that will be placed as the footer of the payment methods selection 
+ view controller.
+
+ When the footer view needs to be resized, it will be sent a
+ `sizeThatFits:` call. The view should respond correctly to this method in order
+ to be sized and positioned properly.
+ */
+@property (nonatomic, strong) UIView *paymentMethodsViewControllerFooterView;
+
+/**
+ A view that will be placed as the footer of the add card view controller.
+
+ When the footer view needs to be resized, it will be sent a
+ `sizeThatFits:` call. The view should respond correctly to this method in order
+ to be sized and positioned properly.
+ */
+@property (nonatomic, strong) UIView *addCardViewControllerFooterView;
+
+/**
  If `paymentContext:didFailToLoadWithError:` is called on your delegate, you
  can in turn call this method to try loading again (if that hasn't been called, 
  calling this will do nothing). If retrying in turn fails, `paymentContext:didFailToLoadWithError:` 
@@ -287,7 +316,6 @@ NS_ASSUME_NONNULL_BEGIN
        already showing a view controller, or in the middle of requesting a payment.
  */
 - (void)requestPayment;
-
 
 @end
 

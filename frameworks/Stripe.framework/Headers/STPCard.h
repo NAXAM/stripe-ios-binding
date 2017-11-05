@@ -115,6 +115,13 @@ typedef NS_ENUM(NSInteger, STPCardFundingType) {
 @property (nonatomic, nullable, readonly) NSString *currency;
 
 /**
+ A set of key/value pairs associated with the card object.
+
+ @see https://stripe.com/docs/api#metadata
+ */
+@property (nonatomic, copy, nullable, readonly) NSDictionary<NSString *, NSString *> *metadata;
+
+/**
  Returns a string representation for the provided card brand; 
  i.e. `[NSString stringFromBrand:STPCardBrandVisa] ==  @"Visa"`.
 
@@ -124,6 +131,23 @@ typedef NS_ENUM(NSInteger, STPCardFundingType) {
  */
 + (NSString *)stringFromBrand:(STPCardBrand)brand;
 
+/**
+ This parses a string representing a card's brand into the appropriate
+ STPCardBrand enum value,
+ i.e. `[STPCard brandFromString:@"American Express"] == STPCardBrandAmex`.
+
+ The string values themselves are specific to Stripe as listed in the Stripe API
+ documentation.
+
+ @see https://stripe.com/docs/api#card_object-brand
+
+ @param string a string representing the card's brand as returned from
+ the Stripe API
+
+ @return an enum value mapped to that string. If the string is unrecognized,
+ returns STPCardBrandUnknown.
+ */
++ (STPCardBrand)brandFromString:(NSString *)string;
 
 #pragma mark - Deprecated methods
 
@@ -195,19 +219,6 @@ typedef NS_ENUM(NSInteger, STPCardFundingType) {
  returns `STPCardFundingTypeOther`.
  */
 + (STPCardFundingType)fundingFromString:(NSString *)string DEPRECATED_ATTRIBUTE;
-
-/**
- This parses a string representing a card's brand into the appropriate 
- STPCardBrand enum value, 
- i.e. `[STPCard brandFromString:@"American Express"] == STPCardBrandAmex`
-
- @param string a string representing the card's brand as returned from 
- the Stripe API
-
- @return an enum value mapped to that string. If the string is unrecognized, 
- returns STPCardBrandUnknown.
- */
-+ (STPCardBrand)brandFromString:(NSString *)string DEPRECATED_ATTRIBUTE;
 
 @end
 
