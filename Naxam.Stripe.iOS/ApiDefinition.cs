@@ -10,14 +10,14 @@ using AddressBook;
 
 namespace StripeSdk
 {
-    partial interface ISTPAPIResponseDecodable {}
-    partial interface ISTPFormEncodable {}
-    partial interface ISTPPaymentMethod {}
-    partial interface ISTPSourceProtocol {}
-    partial interface ISTPBackendAPIAdapter {}
+    partial interface ISTPAPIResponseDecodable { }
+    partial interface ISTPFormEncodable { }
+    partial interface ISTPPaymentMethod { }
+    partial interface ISTPSourceProtocol { }
+    partial interface ISTPBackendAPIAdapter { }
     partial interface ISTPPaymentContextDelegate { }
-    partial interface ISTPEphemeralKeyProvider {}
-    partial interface ISTPPaymentMethodsViewControllerDelegate {}
+    partial interface ISTPEphemeralKeyProvider { }
+    partial interface ISTPPaymentMethodsViewControllerDelegate { }
 
     // typedef void (^STPVoidBlock)(void);
     delegate void STPVoidBlock();
@@ -162,8 +162,8 @@ namespace StripeSdk
         void CreateTokenWithPersonalIDNumber(string pii, [NullAllowed] STPTokenCompletionBlock completion);
     }
 
-	// @interface Upload (STPAPIClient)
-	[Category]
+    // @interface Upload (STPAPIClient)
+    [Category]
     [BaseType(typeof(STPAPIClient))]
     interface STPAPIClient_Upload
     {
@@ -172,8 +172,8 @@ namespace StripeSdk
         void UploadImage(UIImage image, STPFilePurpose purpose, [NullAllowed] STPFileCompletionBlock completion);
     }
 
-	// @interface CreditCards (STPAPIClient)
-	[Category]
+    // @interface CreditCards (STPAPIClient)
+    [Category]
     [BaseType(typeof(STPAPIClient))]
     interface STPAPIClient_CreditCards
     {
@@ -182,8 +182,8 @@ namespace StripeSdk
         void CreateTokenWithCard(STPCardParams card, [NullAllowed] STPTokenCompletionBlock completion);
     }
 
-	// @interface ApplePay (Stripe)
-	[Category]
+    // @interface ApplePay (Stripe)
+    [Category]
     [BaseType(typeof(Stripe))]
     interface Stripe_ApplePay
     {
@@ -206,8 +206,8 @@ namespace StripeSdk
         PKPaymentRequest PaymentRequestWithMerchantIdentifier(string merchantIdentifier, string countryCode, string currentCode);
     }
 
-	// @interface Sources (STPAPIClient)
-	[Category]
+    // @interface Sources (STPAPIClient)
+    [Category]
     [BaseType(typeof(STPAPIClient))]
     interface STPAPIClient_Sources
     {
@@ -223,7 +223,7 @@ namespace StripeSdk
         [Export("startPollingSourceWithId:clientSecret:timeout:completion:"), Deprecated(PlatformName.None, PlatformArchitecture.All, "Source polling is not available in extensions")]
         void StartPollingSourceWithId(string identifier, string secret, double timeout, STPSourceCompletionBlock completion);
 
-		// - (void)stopPollingSourceWithId:(NSString *)identifier NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions") DEPRECATED_ATTRIBUTE;
+        // - (void)stopPollingSourceWithId:(NSString *)identifier NS_EXTENSION_UNAVAILABLE("Source polling is not available in extensions") DEPRECATED_ATTRIBUTE;
         [Export("stopPollingSourceWithId:"), Deprecated(PlatformName.None, PlatformArchitecture.All, "Source polling is not available in extensions")]
         void StopPollingSourceWithId(string identifier);
     }
@@ -287,8 +287,8 @@ namespace StripeSdk
         [Export("initWithABRecord:")]
         unsafe IntPtr Constructor(ABRecord record);
 
-		// -(ABRecordRef _Nonnull)ABRecordValue;
-		[Export("ABRecordValue")]
+        // -(ABRecordRef _Nonnull)ABRecordValue;
+        [Export("ABRecordValue")]
         unsafe ABRecord ABRecordValue { get; }
 
         // -(instancetype _Nonnull)initWithPKContact:(PKContact * _Nonnull)contact __attribute__((availability(ios, introduced=9.0)));
@@ -310,9 +310,17 @@ namespace StripeSdk
         [Export("containsRequiredFields:")]
         bool ContainsRequiredFields(STPBillingAddressFields requiredFields);
 
+        //- (BOOL)containsContentForBillingAddressFields:(STPBillingAddressFields)desiredFields;
+        [Export("containsContentForBillingAddressFields:")]
+        bool ContainsContentForBillingAddressFields(STPBillingAddressFields requiredFields);
+
         // -(BOOL)containsRequiredShippingAddressFields:(PKAddressField)requiredFields;
         [Export("containsRequiredShippingAddressFields:")]
         bool ContainsRequiredShippingAddressFields(PKAddressField requiredFields);
+
+        //- (BOOL)containsContentForShippingAddressFields:(PKAddressField)desiredFields;
+        [Export("containsContentForShippingAddressFields:")]
+        bool ContainsContentForShippingAddressFields(PKAddressField requiredFields);
 
         // +(PKAddressField)applePayAddressFieldsFromBillingAddressFields:(STPBillingAddressFields)billingAddressFields;
         [Static]
@@ -331,9 +339,9 @@ namespace StripeSdk
         [NullAllowed, Export("rootObjectName")]
         string RootObjectName { get; }
 
-		// @required +(NSDictionary * _Nonnull)propertyNamesToFormFieldNamesMapping;
-		//TODO Static method inside protocol
-		[Abstract]
+        // @required +(NSDictionary * _Nonnull)propertyNamesToFormFieldNamesMapping;
+        //TODO Static method inside protocol
+        [Abstract]
         [Export("propertyNamesToFormFieldNamesMapping")]
         NSDictionary PropertyNamesToFormFieldNamesMapping { get; }
 
@@ -441,8 +449,8 @@ namespace StripeSdk
     [BaseType(typeof(NSObject))]
     interface STPSourceProtocol
     {
-		// @property (nonatomic, readonly) NSString *stripeID;
-		[Abstract]
+        // @property (nonatomic, readonly) NSString *stripeID;
+        [Abstract]
         [Export("stripeID")]
         string StripeID { get; }
     }
@@ -458,7 +466,7 @@ namespace StripeSdk
 
         // @property (readonly, copy, nonatomic) NSString * _Nonnull stripeID;
         [Export("stripeID")]
-        string StripeID { get; } 
+        string StripeID { get; }
 
         // @property (readonly, nonatomic) id<STPSourceProtocol> _Nullable defaultSource;
         [NullAllowed, Export("defaultSource")]
@@ -528,18 +536,18 @@ namespace StripeSdk
     [BaseType(typeof(NSObject))]
     interface STPPaymentMethod
     {
-		// @property (nonatomic, strong, readonly) UIImage *image;
-		[Abstract]
+        // @property (nonatomic, strong, readonly) UIImage *image;
+        [Abstract]
         [Export("image", ArgumentSemantic.Strong)]
         UIImage Image { get; }
 
-		// @property (nonatomic, strong, readonly) UIImage *templateImage;
-		[Abstract]
+        // @property (nonatomic, strong, readonly) UIImage *templateImage;
+        [Abstract]
         [Export("templateImage", ArgumentSemantic.Strong)]
         UIImage TemplateImage { get; }
 
-		// @property (nonatomic, strong, readonly) NSString *label;
-		[Abstract]
+        // @property (nonatomic, strong, readonly) NSString *label;
+        [Abstract]
         [Export("label", ArgumentSemantic.Strong)]
         string Label { get; }
     }
@@ -635,12 +643,12 @@ namespace StripeSdk
         [Export("requiredBillingAddressFields", ArgumentSemantic.Assign)]
         STPBillingAddressFields RequiredBillingAddressFields { get; set; }
 
-		// @property (nonatomic, assign, readwrite) PKAddressField requiredShippingAddressFields;
-		[Export("requiredShippingAddressFields", ArgumentSemantic.Assign)]
-		PKAddressField RequiredShippingAddressFields { get; set; }
+        // @property (nonatomic, assign, readwrite) PKAddressField requiredShippingAddressFields;
+        [Export("requiredShippingAddressFields", ArgumentSemantic.Assign)]
+        PKAddressField RequiredShippingAddressFields { get; set; }
 
-		// @property (nonatomic, assign, readwrite) BOOL verifyPrefilledShippingAddress;
-		[Export("verifyPrefilledShippingAddress", ArgumentSemantic.Assign)]
+        // @property (nonatomic, assign, readwrite) BOOL verifyPrefilledShippingAddress;
+        [Export("verifyPrefilledShippingAddress", ArgumentSemantic.Assign)]
         bool VerifyPrefilledShippingAddress { get; set; }
 
         // @property (nonatomic, assign, readwrite) STPShippingType shippingType;
@@ -1376,12 +1384,12 @@ namespace StripeSdk
         [Export("paymentCurrency")]
         string PaymentCurrency { get; set; }
 
-		// @property (nonatomic, copy) NSString *paymentCountry;
-		[Export("paymentCountry")]
-		string PaymentCountry { get; set; }
+        // @property (nonatomic, copy) NSString *paymentCountry;
+        [Export("paymentCountry")]
+        string PaymentCountry { get; set; }
 
-		// @property (copy, nonatomic) NSArray<PKPaymentSummaryItem *> * _Nonnull paymentSummaryItems __attribute__((availability(ios, introduced=8.0)));
-		[Introduced(PlatformName.iOS, 8, 0)]
+        // @property (copy, nonatomic) NSArray<PKPaymentSummaryItem *> * _Nonnull paymentSummaryItems __attribute__((availability(ios, introduced=8.0)));
+        [Introduced(PlatformName.iOS, 8, 0)]
         [Export("paymentSummaryItems", ArgumentSemantic.Copy)]
         PKPaymentSummaryItem[] PaymentSummaryItems { get; set; }
 
@@ -1392,7 +1400,7 @@ namespace StripeSdk
         // @property (nonatomic, strong) UIView *paymentMethodsViewControllerFooterView;
         [Export("paymentMethodsViewControllerFooterView", ArgumentSemantic.Strong)]
         UIView PaymentMethodsViewControllerFooterView { get; set; }
-        
+
         // @property (nonatomic, strong) UIView *addCardViewControllerFooterView;
         [Export("addCardViewControllerFooterView", ArgumentSemantic.Strong)]
         UIView AddCardViewControllerFooterView { get; set; }
@@ -1472,18 +1480,18 @@ namespace StripeSdk
         [Export("initWithConfiguration:theme:apiAdapter:delegate:")]
         IntPtr Constructor(STPPaymentConfiguration configuration, STPTheme theme, ISTPBackendAPIAdapter apiAdapter, ISTPPaymentMethodsViewControllerDelegate @delegate);
 
-		// -(instancetype _Nonnull)initWithConfiguration:(STPPaymentConfiguration * _Nonnull)configuration theme:(STPTheme * _Nonnull)theme customerContext:(STPCustomerContext *)customerContext delegate:(id<STPPaymentMethodsViewControllerDelegate> _Nonnull)delegate;
-		[Export("initWithConfiguration:theme:customerContext:delegate:")]
-		IntPtr Constructor(STPPaymentConfiguration configuration, STPTheme theme, STPCustomerContext customerContext, ISTPPaymentMethodsViewControllerDelegate @delegate);
+        // -(instancetype _Nonnull)initWithConfiguration:(STPPaymentConfiguration * _Nonnull)configuration theme:(STPTheme * _Nonnull)theme customerContext:(STPCustomerContext *)customerContext delegate:(id<STPPaymentMethodsViewControllerDelegate> _Nonnull)delegate;
+        [Export("initWithConfiguration:theme:customerContext:delegate:")]
+        IntPtr Constructor(STPPaymentConfiguration configuration, STPTheme theme, STPCustomerContext customerContext, ISTPPaymentMethodsViewControllerDelegate @delegate);
 
-		// @property (nonatomic, strong) STPUserInformation * _Nullable prefilledInformation;
-		[NullAllowed, Export("prefilledInformation", ArgumentSemantic.Strong)]
+        // @property (nonatomic, strong) STPUserInformation * _Nullable prefilledInformation;
+        [NullAllowed, Export("prefilledInformation", ArgumentSemantic.Strong)]
         STPUserInformation PrefilledInformation { get; set; }
 
         // @property (nonatomic, strong) UIView *paymentMethodsViewControllerFooterView;
         [Export("paymentMethodsViewControllerFooterView", ArgumentSemantic.Strong)]
         UIView PaymentMethodsViewControllerFooterView { get; set; }
-        
+
         // @property (nonatomic, strong) UIView *addCardViewControllerFooterView;
         [Export("addCardViewControllerFooterView", ArgumentSemantic.Strong)]
         UIView AddCardViewControllerFooterView { get; set; }
@@ -1919,11 +1927,21 @@ namespace StripeSdk
         [Export("threeDSecureParamsWithAmount:currency:returnURL:card:")]
         STPSourceParams ThreeDSecureParamsWithAmount(nuint amount, string currency, string returnURL, string card);
 
-		// + (STPSourceParams*) p24ParamsWithAmount:(NSUInteger) amount currency:(NSString*) currency email:(NSString*) email  name:(nullable NSString *)name returnURL:(NSString*) returnURL;
-		[Static]
-		[Export("p24ParamsWithAmount:currency:email:name:returnURL:card:")]
-		STPSourceParams P24ParamsWithAmount(nuint amount, string currency, string email, string name, string returnURL, string card);
-	}
+        //+ (STPSourceParams *)alipayParamsWithAmount:(NSUInteger)amount currency:(NSString *)currency returnURL:(NSString *)returnURL;
+        [Static]
+        [Export("alipayParamsWithAmount:currency:returnURL:")]
+        STPSourceParams alipayParamsWithAmount(nuint amount, string currency, string returnURL);
+
+        //+ (STPSourceParams *)alipayReusableParamsWithCurrency:(NSString *)currency returnURL:(NSString *)returnURL;
+        [Static]
+        [Export("alipayReusableParamsWithCurrency:returnURL:")]
+        STPSourceParams alipayReusableParamsWithCurrency(string currency, string returnURL);
+
+        // + (STPSourceParams*) p24ParamsWithAmount:(NSUInteger) amount currency:(NSString*) currency email:(NSString*) email  name:(nullable NSString *)name returnURL:(NSString*) returnURL;
+        [Static]
+        [Export("p24ParamsWithAmount:currency:email:name:returnURL:card:")]
+        STPSourceParams P24ParamsWithAmount(nuint amount, string currency, string email, string name, string returnURL, string card);
+    }
 
     // @interface STPToken : NSObject <STPAPIResponseDecodable, STPSourceProtocol>
     [BaseType(typeof(NSObject))]
@@ -2038,7 +2056,7 @@ namespace StripeSdk
     [BaseType(typeof(UINavigationBar))]
     interface UINavigationBar_Stripe_Theme
     {
-		// - (void)stp_setTheme:(STPTheme *)theme DEPRECATED_MSG_ATTRIBUTE("Use the `stp_theme` property.");
+        // - (void)stp_setTheme:(STPTheme *)theme DEPRECATED_MSG_ATTRIBUTE("Use the `stp_theme` property.");
         [Static, Deprecated(PlatformName.None, message: "Use the `stp_theme` property.")]
         [Export("stp_setTheme:")]
         void StpSetTheme(STPTheme theme);
