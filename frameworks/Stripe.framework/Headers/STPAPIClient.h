@@ -8,21 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import <PassKit/PassKit.h>
+
+#import "FauxPasAnnotations.h"
 #import "STPBlocks.h"
 #import "STPFile.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define FAUXPAS_IGNORED_ON_LINE(...)
-#define FAUXPAS_IGNORED_IN_FILE(...)
-FAUXPAS_IGNORED_IN_FILE(APIAvailability)
-
 /**
  The current version of this library.
  */
-static NSString *const STPSDKVersion = @"11.5.0";
+static NSString *const STPSDKVersion = @"12.1.2";
 
-@class STPBankAccount, STPBankAccountParams, STPCard, STPCardParams, STPSourceParams, STPToken, STPPaymentConfiguration;
+@class STPBankAccount, STPBankAccountParams, STPCard, STPCardParams, STPConnectAccountParams, STPSourceParams, STPToken, STPPaymentConfiguration;
 
 /**
  A top-level class that imports the rest of the Stripe SDK.
@@ -128,6 +126,28 @@ static NSString *const STPSDKVersion = @"11.5.0";
 - (void)createTokenWithPersonalIDNumber:(NSString *)pii completion:(__nullable STPTokenCompletionBlock)completion;
 
 @end
+
+#pragma mark Connect Accounts
+
+/**
+ Stripe extensions for working with Connect Accounts
+ */
+@interface STPAPIClient (ConnectAccounts)
+
+
+/**
+ Converts an `STPConnectAccountParams` object into a Stripe token using the Stripe API.
+
+ This allows the connected account to accept the Terms of Service, and/or send Legal Entity information.
+
+ @param account The Connect Account parameters. Cannot be nil.
+ @param completion The callback to run with the returned Stripe token (and any errors that may have occurred).
+ */
+- (void)createTokenWithConnectAccount:(STPConnectAccountParams *)account completion:(__nullable STPTokenCompletionBlock)completion;
+
+@end
+
+#pragma mark Upload
 
 /**
  STPAPIClient extensions to upload files.
@@ -240,7 +260,7 @@ static NSString *const STPSDKVersion = @"11.5.0";
  */
 + (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier
                                                    country:(NSString *)countryCode
-                                                  currency:(NSString *)currencyCode NS_AVAILABLE_IOS(8_0);
+                                                  currency:(NSString *)currencyCode;
 
 @end
 

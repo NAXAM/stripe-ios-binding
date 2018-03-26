@@ -90,6 +90,7 @@ namespace StripeSdk
 		Discover,
 		Jcb,
 		DinersClub,
+		UnionPay,
 		Unknown
 	}
 

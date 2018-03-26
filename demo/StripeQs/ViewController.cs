@@ -23,7 +23,9 @@ namespace StripeQs
             // Perform any additional setup after loading the view, typically from a nib.
             var config = STPPaymentConfiguration.SharedConfiguration();
             config.ShippingType = STPShippingType.Shipping;
-            config.RequiredShippingAddressFields = PassKit.PKAddressField.PostalAddress | PassKit.PKAddressField.Phone;
+            config.RequiredShippingAddressFields = new NSSet(
+                NSNumber.FromInt32((int)PassKit.PKAddressField.PostalAddress),
+                NSNumber.FromInt32((int)PassKit.PKAddressField.Phone));
 
             paymentContext = new STPPaymentContext(new MyAPIClient(), config, STPTheme.DefaultTheme);
 

@@ -52,12 +52,6 @@ namespace StripeSdk
     interface STPAPIResponseDecodable
     {
         //TODO static method inside protocol
-        // @required +(NSArray * _Nonnull)requiredFields;
-        [Abstract]
-        [Export("requiredFields")]
-        NSObject[] RequiredFields { get; }
-
-        //TODO static method inside protocol
         // @required +(instancetype _Nullable)decodedObjectFromAPIResponse:(NSDictionary * _Nullable)response;
         [Abstract]
         [Export("decodedObjectFromAPIResponse:")]
@@ -162,6 +156,27 @@ namespace StripeSdk
         void CreateTokenWithPersonalIDNumber(string pii, [NullAllowed] STPTokenCompletionBlock completion);
     }
 
+    /**
+    Stripe extensions for working with Connect Accounts
+    // @interface STPAPIClient (ConnectAccounts)
+    */
+    [Category]
+    [BaseType(typeof(STPAPIClient))]
+    interface STPAPIClient_ConnectAccounts
+    {
+        /**
+        Converts an `STPConnectAccountParams` object into a Stripe token using the Stripe API.
+
+        This allows the connected account to accept the Terms of Service, and/or send Legal Entity information.
+
+        @param account The Connect Account parameters. Cannot be nil.
+        @param completion The callback to run with the returned Stripe token (and any errors that may have occurred).
+        // - (void)createTokenWithConnectAccount:(STPConnectAccountParams *)account completion:(__nullable STPTokenCompletionBlock)completion;
+        */
+        [Export("createTokenWithConnectAccount:completion:")]
+        void CreateTokenWithConnectAccount(STPConnectAccountParams account, [NullAllowed] STPTokenCompletionBlock completion);
+    }
+
     // @interface Upload (STPAPIClient)
     [Category]
     [BaseType(typeof(STPAPIClient))]
@@ -200,8 +215,7 @@ namespace StripeSdk
         [Static, Export("paymentRequestWithMerchantIdentifier:")]
         PKPaymentRequest PaymentRequestWithMerchantIdentifier(string merchantIdentifier);
 
-        // + (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier country:(NSString *)countryCode currency:(NSString *)currencyCode NS_AVAILABLE_IOS(8_0);
-        [Introduced(PlatformName.iOS, 8, 0)]
+        // + (PKPaymentRequest *)paymentRequestWithMerchantIdentifier:(NSString *)merchantIdentifier country:(NSString *)countryCode currency:(NSString *)currencyCode
         [Static, Export("paymentRequestWithMerchantIdentifier:country:currency:")]
         PKPaymentRequest PaymentRequestWithMerchantIdentifier(string merchantIdentifier, string countryCode, string currentCode);
     }
@@ -241,7 +255,7 @@ namespace StripeSdk
 
     // @interface STPAddress : NSObject APIResponseDecodable>
     [BaseType(typeof(NSObject))]
-    interface STPAddress : STPAPIResponseDecodable
+    interface STPAddress : STPAPIResponseDecodable, STPFormEncodable
     {
         // @property (copy, nonatomic) NSString * _Nullable name;
         [NullAllowed, Export("name")]
@@ -283,26 +297,15 @@ namespace StripeSdk
         [Static, Export("shippingInfoForChargeWithAddress:shippingMethod:")]
         NSDictionary ShippingInfoForChargeWithAddress(STPAddress address, [NullAllowed]PKShippingMethod method);
 
-        // -(instancetype _Nonnull)initWithABRecord:(ABRecordRef _Nonnull)record;
-        [Export("initWithABRecord:")]
-        unsafe IntPtr Constructor(ABRecord record);
-
-        // -(ABRecordRef _Nonnull)ABRecordValue;
-        [Export("ABRecordValue")]
-        unsafe ABRecord ABRecordValue { get; }
-
         // -(instancetype _Nonnull)initWithPKContact:(PKContact * _Nonnull)contact __attribute__((availability(ios, introduced=9.0)));
-        [Introduced(PlatformName.iOS, 9, 0)]
         [Export("initWithPKContact:")]
         IntPtr Constructor(PKContact contact);
 
         // -(PKContact * _Nonnull)PKContactValue __attribute__((availability(ios, introduced=9.0)));
-        [Introduced(PlatformName.iOS, 9, 0)]
         [Export("PKContactValue")]
         PKContact PKContactValue { get; }
 
         // -(instancetype _Nonnull)initWithCNContact:(CNContact * _Nonnull)contact __attribute__((availability(ios, introduced=9.0)));
-        [Introduced(PlatformName.iOS, 9, 0)]
         [Export("initWithCNContact:")]
         IntPtr Constructor(CNContact contact);
 
@@ -314,18 +317,62 @@ namespace StripeSdk
         [Export("containsContentForBillingAddressFields:")]
         bool ContainsContentForBillingAddressFields(STPBillingAddressFields requiredFields);
 
-        // -(BOOL)containsRequiredShippingAddressFields:(PKAddressField)requiredFields;
+        // - (BOOL)containsRequiredShippingAddressFields:(nullable NSSet<STPContactField> *)requiredFields;
         [Export("containsRequiredShippingAddressFields:")]
-        bool ContainsRequiredShippingAddressFields(PKAddressField requiredFields);
+        bool ContainsRequiredShippingAddressFields([NullAllowed] NSSet<NSString> requiredFields);
 
-        //- (BOOL)containsContentForShippingAddressFields:(PKAddressField)desiredFields;
+        /**
+        Checks if this STPAddress has any content (possibly invalid) in any of the
+        desired shipping address fields.
+
+        Where `containsRequiredShippingAddressFields:` validates that this STPAddress
+        contains valid data in all of the required fields, this method checks for the
+        existence of *any* data.
+
+        Note: When `desiredFields == nil`, this method always returns
+        NO.
+
+        @parameter desiredFields The shipping address information the caller is interested in.
+        @return YES if there is any data in this STPAddress that's relevant for those fields.
+
+        - (BOOL)containsContentForShippingAddressFields:(nullable NSSet<STPContactField> *)desiredFields;
+        */
         [Export("containsContentForShippingAddressFields:")]
-        bool ContainsContentForShippingAddressFields(PKAddressField requiredFields);
+        bool ContainsContentForShippingAddressFields([NullAllowed] NSSet<NSString> requiredFields);
 
         // +(PKAddressField)applePayAddressFieldsFromBillingAddressFields:(STPBillingAddressFields)billingAddressFields;
         [Static]
         [Export("applePayAddressFieldsFromBillingAddressFields:")]
         PKAddressField ApplePayAddressFieldsFromBillingAddressFields(STPBillingAddressFields billingAddressFields);
+
+        /**
+        Converts a set of STPContactField values into the closest equivalent
+        representation of PKAddressField options
+
+        @param contactFields Stripe contact fields values to convert.
+        @return The closest representation of the contact fields as
+        a PKAddressField value.
+
+        + (PKAddressField)pkAddressFieldsFromStripeContactFields:(nullable NSSet<STPContactField> *)contactFields;
+        */
+        [Static]
+        [Export("pkAddressFieldsFromStripeContactFields:")]
+        PKAddressField PKAddressFieldsFromStripeContactFields([NullAllowed] NSSet contactFields);
+
+        /**
+        Converts a set of STPContactField values into the closest equivalent
+        representation of PKContactField options
+
+        @param contactFields Stripe contact fields values to convert.
+        @return The closest representation of the contact fields as
+        a PKContactField value.
+
+        + (nullable NSSet<PKContactField> *)pkContactFieldsFromStripeContactFields:(nullable NSSet<STPContactField> *)contactFields API_AVAILABLE(ios(11.0));
+        */
+        [Introduced(PlatformName.iOS, 8, 0)]
+        [Static]
+        [Export("pkContactFieldsFromStripeContactFields:")]
+        NSSet PLContactFieldsFromStripeContactFields([NullAllowed] NSSet contactFields);
     }
 
     // @protocol STPFormEncodable <NSObject>
@@ -643,9 +690,16 @@ namespace StripeSdk
         [Export("requiredBillingAddressFields", ArgumentSemantic.Assign)]
         STPBillingAddressFields RequiredBillingAddressFields { get; set; }
 
-        // @property (nonatomic, assign, readwrite) PKAddressField requiredShippingAddressFields;
-        [Export("requiredShippingAddressFields", ArgumentSemantic.Assign)]
-        PKAddressField RequiredShippingAddressFields { get; set; }
+        /**
+        The shipping address fields the user must fill out when prompted for their
+        shipping info. Set to nil if shipping address is not required.
+
+        The default value is nil.
+
+        @property (nonatomic, copy, nullable, readwrite) NSSet<STPContactField> *requiredShippingAddressFields;
+        */
+        [NullAllowed, Export("requiredShippingAddressFields", ArgumentSemantic.Assign)]
+        NSSet RequiredShippingAddressFields { get; set; }
 
         // @property (nonatomic, assign, readwrite) BOOL verifyPrefilledShippingAddress;
         [Export("verifyPrefilledShippingAddress", ArgumentSemantic.Assign)]
@@ -666,6 +720,30 @@ namespace StripeSdk
         // @property (nonatomic, assign, readwrite) BOOL canDeletePaymentMethods;
         [Export("canDeletePaymentMethods")]
         bool CanDeletePaymentMethods { get; set; }
+
+        /**
+        If the value of this property is true, when your user adds a card in our UI,
+        a card source will be created and added to their Stripe Customer. The default
+        value is false.
+
+        @see https://stripe.com/docs/sources/cards#create-source
+
+        @property (nonatomic, assign) BOOL createCardSources;
+        */
+        [Export("createCardSources")]
+        bool CreateCardSources { get; set; }
+
+        /**
+        In order to perform API requests on behalf of a connected account, e.g. to
+        create a source on a connected account, set this property to the ID of the
+        account for which this request is being made.
+
+        @see https://stripe.com/docs/connect/authentication#authentication-via-the-stripe-account-header
+
+        @property (nonatomic, copy, nullable) NSString *stripeAccount;
+        */
+        [Export("stripeAccount")]
+        string StripeAccount { get; set; }
     }
 
     // @interface STPUserInformation : NSObject <NSCopying>
@@ -722,12 +800,34 @@ namespace StripeSdk
         // @required -(void)addCardViewControllerDidCancel:(STPAddCardViewController * _Nonnull)addCardViewController;
         [Abstract]
         [Export("addCardViewControllerDidCancel:")]
-        void AddCardViewControllerDidCancel(STPAddCardViewController addCardViewController);
+        void DidCancel(STPAddCardViewController addCardViewController);
 
         // @required -(void)addCardViewController:(STPAddCardViewController * _Nonnull)addCardViewController didCreateToken:(STPToken * _Nonnull)token completion:(STPErrorBlock _Nonnull)completion;
-        [Abstract]
         [Export("addCardViewController:didCreateToken:completion:")]
-        void AddCardViewController(STPAddCardViewController addCardViewController, STPToken token, STPErrorBlock completion);
+        void DidCreateToken(STPAddCardViewController addCardViewController, STPToken token, STPErrorBlock completion);
+
+        /**
+        This is called when the user successfully adds a card and Stripe returns a
+        card source.
+
+        Note: If `createsCardSource` is false, this method will not be called;
+        `addCardViewController:didCreateToken:` will be called instead.
+
+        You should send the source to your backend to store it on a customer, and then
+        call the provided `completion` block when that call is finished. If an error
+        occurs while talking to your backend, call `completion(error)`, otherwise,
+        dismiss (or pop) the view controller.
+
+        @param addCardViewController the view controller that successfully created a token
+        @param source                the Stripe source that was created. @see STPSource
+        @param completion            call this callback when you're done sending the token to your backend
+
+        - (void)addCardViewController:(STPAddCardViewController *)addCardViewController
+                    didCreateSource:(STPSource *)source
+                        completion:(STPErrorBlock)completion;
+        */
+        [Export("addCardViewController:didCreateSource:completion:")]
+        void DidCreateSource(STPAddCardViewController addCardViewController, STPSource token, STPErrorBlock completion);
     }
 
     // @interface ApplePay (STPAPIClient)
@@ -1071,6 +1171,15 @@ namespace StripeSdk
         [Static]
         [Export("errorImageForCardBrand:")]
         UIImage ErrorImageForCardBrand(STPCardBrand brand);
+
+        /**
+        An icon representing UnionPay.
+
+        + (UIImage *)unionPayCardImage;
+        */
+        [Static]
+        [Export("unionPayCardImage")]
+        UIImage UnionPayCardImage();
     }
 
     // @interface STPPaymentActivityIndicatorView : UIView
@@ -1397,6 +1506,25 @@ namespace StripeSdk
         [Export("modalPresentationStyle", ArgumentSemantic.Assign)]
         UIModalPresentationStyle ModalPresentationStyle { get; set; }
 
+        /**
+        The mode to use when displaying the title of the navigation bar in all view
+        controllers presented by the context. The default value is `automatic`,
+        which causes the title to use the same styling as the previously displayed
+        navigation item (if the view controller is pushed onto the `hostViewController`).
+
+        If the `prefersLargeTitles` property of the `hostViewController`'s navigation bar
+        is false, this property has no effect and the navigation item's title is always
+        displayed as a small title.
+
+        If the view controller is presented modally, `automatic` and
+        `never` always result in a navigation bar with a small title.
+
+        @property (nonatomic, assign) UINavigationItemLargeTitleDisplayMode largeTitleDisplayMode NS_AVAILABLE_IOS(11_0);
+        */
+        [Introduced(PlatformName.iOS, 11, 0)]
+        [Export("largeTitleDisplayMode", ArgumentSemantic.Assign)]
+        UINavigationItemLargeTitleDisplayMode LargeTitleDisplayMode { get; set; }
+
         // @property (nonatomic, strong) UIView *paymentMethodsViewControllerFooterView;
         [Export("paymentMethodsViewControllerFooterView", ArgumentSemantic.Strong)]
         UIView PaymentMethodsViewControllerFooterView { get; set; }
@@ -1527,8 +1655,20 @@ namespace StripeSdk
         void PaymentMethodsViewControllerDidCancel(STPPaymentMethodsViewController paymentMethodsViewController);
     }
 
-    // typedef void (^STPRedirectContextCompletionBlock)(NSString * _Nonnull, NSString * _Nonnull, NSError * _Nonnull);
-    delegate void STPRedirectContextCompletionBlock(string arg0, string arg1, NSError arg2);
+    /**
+    A callback run when the context believes the redirect action has been completed.
+
+    @param sourceID The stripe id of the source.
+    @param clientSecret The client secret of the source.
+    @param error An error if one occured. Note that a lack of an error does not 
+    mean that the action was completed successfully, the presence of one confirms 
+    that it was not. Currently the only possible error the context can know about 
+    is if SFSafariViewController fails its initial load (like the user has no 
+    internet connection, or servers are down).
+
+    typedef void (^STPRedirectContextCompletionBlock)(NSString *sourceID, NSString * __nullable clientSecret, NSError * __nullable error);
+    */
+    delegate void STPRedirectContextCompletionBlock(string sourceID, [NullAllowed]string clientSecret, NSError error);
 
     // @interface STPRedirectContext : NSObject
     //[Unavailable(PlatformName.iOSAppExtension)]
@@ -1549,8 +1689,27 @@ namespace StripeSdk
         [Export("startRedirectFlowFromViewController:")]
         void StartRedirectFlowFromViewController(UIViewController presentingViewController);
 
-        // -(void)startSafariViewControllerRedirectFlowFromViewController:(UIViewController * _Nonnull)presentingViewController __attribute__((availability(ios, introduced=9.0)));
-        [Introduced(PlatformName.iOS, 9, 0)]
+        /**
+        Starts a redirect flow by presenting an SFSafariViewController in your app
+        from the passed in view controller.
+
+        You must ensure that your app delegate listens for  the `returnURL` that you
+        set on your source object, and forwards it to the Stripe SDK so that the
+        context can be notified when the redirect is completed and dismiss the
+        view controller. See `[Stripe handleStripeURLCallbackWithURL:]`
+
+        The context will listen for both received URLs and app open notifications 
+        and fire its completion block when either the URL is received, or the next
+        time the app is foregrounded.
+
+        @note This method does nothing if the context is not in the 
+        `STPRedirectContextStateNotStarted` state.
+
+        @param presentingViewController The view controller to present the Safari 
+        view controller from.
+
+        - (void)startSafariViewControllerRedirectFlowFromViewController:(UIViewController *)presentingViewController;
+        */
         [Export("startSafariViewControllerRedirectFlowFromViewController:")]
         void StartSafariViewControllerRedirectFlowFromViewController(UIViewController presentingViewController);
 
@@ -1941,6 +2100,22 @@ namespace StripeSdk
         [Static]
         [Export("p24ParamsWithAmount:currency:email:name:returnURL:card:")]
         STPSourceParams P24ParamsWithAmount(nuint amount, string currency, string email, string name, string returnURL, string card);
+
+        /**
+        Creates params for a card source created from Visa Checkout.
+
+        @note Creating an STPSource with these params will give you a
+        source with type == STPSourceTypeCard
+
+        @param callId The callId property from a `VisaCheckoutResult` object.
+        @return An STPSourceParams object populated with the provided values.
+
+        + (STPSourceParams *)visaCheckoutParamsWithCallId:(NSString *)callId;
+        */
+        [Static]
+        [Export("visaCheckoutParamsWithCallId:")]
+        STPSourceParams VisaCheckoutParamsWithCallId(string callId);
+
     }
 
     // @interface STPToken : NSObject <STPAPIResponseDecodable, STPSourceProtocol>
@@ -1975,6 +2150,48 @@ namespace StripeSdk
         // extern NSString *const _Nonnull StripeDomain;
         [Field("StripeDomain", "__Internal")]
         NSString StripeDomain { get; }
+    }
+
+    [Static]
+    partial interface STPContactField
+    {
+        /**
+        Constants that represent different parts of a users contact/address information.
+
+        typedef NSString * STPContactField NS_STRING_ENUM;
+        */
+
+        /**
+        The contact's full physical address.
+
+        extern STPContactField const STPContactFieldPostalAddress;
+        */
+        [Field("STPContactFieldPostalAddress", "__Internal")]
+        NSString PostalAddress { get; }
+
+        /**
+        The contact's email address.
+
+        extern STPContactField const STPContactFieldEmailAddress;
+        */
+        [Field("STPContactFieldEmailAddress", "__Internal")]
+        NSString EmailAddress { get; }
+
+        /**
+        The contact's phone number.
+
+        extern STPContactField const STPContactFieldPhoneNumber;
+        */
+        [Field("STPContactFieldPhoneNumber", "__Internal")]
+        NSString PhoneNumber { get; }
+
+        /**
+        The contact's name.
+
+        extern STPContactField const STPContactFieldName;
+        */
+        [Field("STPContactFieldName", "__Internal")]
+        NSString Name { get; }
     }
 
     [Static]
@@ -2078,6 +2295,22 @@ namespace StripeSdk
         // - (void)clearCachedCustomer;
         [Export("clearCachedCustomer")]
         void ClearCachedCustomer();
+
+        /**
+        By default, `STPCustomerContext` will filter Apple Pay sources when it retrieves
+        a Customer object. Apple Pay sources should generally not be re-used and
+        shouldn't be offered to customers as a new payment source (Apple Pay sources may
+        only be re-used for subscriptions).
+
+        If you are using `STPCustomerContext` to back your own UI and would like to
+        disable Apple Pay filtering, set this property to YES.
+
+        Note: If you are using `STPPaymentContext`, you should not change this property.
+
+        @property (nonatomic, assign) BOOL includeApplePaySources;
+        */
+        [Export("includeApplePaySources", ArgumentSemantic.Assign)]
+        bool IncludeApplePaySources { get; set; }
     }
 
     // @protocol STPEphemeralKeyProvider <NSObject>
@@ -2090,5 +2323,260 @@ namespace StripeSdk
         void SreateCustomerKeyWithAPIVersion(string apiVersion, STPJSONResponseCompletionBlock completion);
     }
 
-    // @interface STPPaymentCardTextField : UIControl <UIKeyInput>
+    /**
+    Parameters for creating a Connect Account token.
+
+    @interface STPConnectAccountParams : NSObject<STPFormEncodable>
+    */
+    [BaseType(typeof(NSObject))]
+    interface STPConnectAccountParams : STPFormEncodable
+    {
+
+        /**
+        Optional boolean indicating that the Terms Of Service were shown to the user &
+        the user accepted them.
+
+        @property (nonatomic, nullable, readonly) NSNumber *tosShownAndAccepted;
+        */
+        [Export("tosShownAndAccepted", ArgumentSemantic.Strong)]
+        NSNumber TosShownAndAccepted { get; }
+
+        /**
+        Required property with information about the legal entity for this account.
+
+        At least one field in the legalEntity must have a value, otherwise the create token
+        call will fail.
+
+        @property (nonatomic, readonly) STPLegalEntityParams *legalEntity;
+        */
+        [Export("legalEntity", ArgumentSemantic.Strong)]
+        STPLegalEntityParams LegalEntity { get; }
+
+        /**
+        `STPConnectAccountParams` cannot be directly instantiated, use `initWithTosShownAndAccepted:legalEntity:`
+        or `initWithLegalEntity:`
+
+        - (instancetype)init __attribute__((unavailable("Cannot be directly instantiated")));
+        */
+
+        /**
+        Initialize `STPConnectAccountParams` with tosShownAndAccepted = YES
+
+        This method cannot be called with `wasAccepted == NO`, guarded by a `NSParameterAssert()`.
+
+        Use this init method if you want to set the `tosShownAndAccepted` parameter. If you
+        don't, use the `initWithLegalEntity:` version instead.
+
+        @param wasAccepted Must be YES, but only if the user was shown & accepted the ToS
+        @param legalEntity data about the legal entity
+
+        - (instancetype)initWithTosShownAndAccepted:(BOOL)wasAccepted
+                                        legalEntity:(STPLegalEntityParams *)legalEntity;
+        */
+        [Export("initWithTosShownAndAccepted:legalEntity:")]
+        IntPtr Constructor(bool wasAccepted, STPLegalEntityParams legalEntity);
+
+        /**
+        Initialize `STPConnectAccountParams` with the `STPLegalEntityParams` provided.
+
+        This init method cannot change the `tosShownAndAccepted` parameter. Use
+        `initWithTosShownAndAccepted:legalEntity:` instead if you need to do that.
+
+        These two init methods exist to avoid the (slightly awkward) NSNumber box that would
+        be needed around `tosShownAndAccepted` if it was optional/nullable, and to enforce
+        that it is either nil or YES.
+
+        @param legalEntity data to send to Stripe about the legal entity
+
+        - (instancetype)initWithLegalEntity:(STPLegalEntityParams *)legalEntity;
+        */
+        [Export("initWithLegalEntity:")]
+        IntPtr Constructor(STPLegalEntityParams legalEntity);
+
+    }
+
+    /**
+    Stripe API parameters to define a Person. Things like their name, address, etc.
+
+    All of the fields are optional.
+
+    @interface STPPersonParams: NSObject<STPFormEncodable>
+    */
+    [BaseType(typeof(NSObject))]
+    interface STPPersonParams : STPFormEncodable
+    {
+        /**
+        The first name of this person.
+
+        @property (nonatomic, copy, nullable) NSString *firstName;
+        */
+        [NullAllowed, Export("firstName")]
+        string FirstName { get; set; }
+
+        /**
+        The last name of this person.
+
+        @property (nonatomic, copy, nullable) NSString *lastName;
+        */
+        [NullAllowed, Export("lastName")]
+        string LastName { get; set; }
+
+        /**
+        The maiden name of this person.
+
+        @property (nonatomic, copy, nullable) NSString *maidenName;
+        */
+        [NullAllowed, Export("maidenName")]
+        string MaidenName { get; set; }
+
+        /**
+        The address parameter. For `STPPersonParams`, this is the address of the person.
+        For the `STPLegalEntityParams` subclass, see also `personalAddress`.
+
+        @property (nonatomic, strong, nullable) STPAddress *address;
+        */
+        [NullAllowed, Export("address")]
+        STPAddress Address { get; set; }
+
+        /**
+        The date of birth (dob) of this person.
+
+        Must include `day`, `month`, and `year`, and only those fields are used.
+
+        @property (nonatomic, copy, nullable) NSDateComponents *dateOfBirth;
+        */
+        [NullAllowed, Export("dateOfBirth")]
+        NSDateComponents DateOfBirth { get; set; }
+
+        /**
+        Verification document for this person.
+
+        @property (nonatomic, strong, nullable) STPVerificationParams *verification;
+        */
+        [NullAllowed, Export("verification")]
+        STPVerificationParams Verification { get; set; }
+    }
+
+    /**
+    Stripe API parameters to define a Legal Entity. This extends `STPPersonParams`
+    and adds some more fields.
+
+    Legal entities can be either an individual or a company.
+
+    @interface STPLegalEntityParams : STPPersonParams
+    */
+    [BaseType(typeof(STPPersonParams))]
+    interface STPLegalEntityParams
+    {
+
+        /**
+        Additional owners of the legal entity.
+
+        @property (nonatomic, copy, nullable) NSArray<STPPersonParams *> *additionalOwners;
+        */
+        [NullAllowed, Export("additionalOwners")]
+        STPPersonParams[] AdditionalOwners { get; set; }
+
+        /**
+        The business name
+
+        @property (nonatomic, copy, nullable) NSString *businessName;
+        */
+        [NullAllowed, Export("businessName")]
+        string BusinessName { get; set; }
+
+        /**
+        The business Tax Id
+
+        @property (nonatomic, copy, nullable) NSString *businessTaxId;
+        */
+        [NullAllowed, Export("businessTaxId")]
+        string BusinessTaxId { get; set; }
+
+        /**
+        The business VAT Id
+
+        @property (nonatomic, copy, nullable) NSString *businessVATId;
+        */
+        [NullAllowed, Export("businessVATId")]
+        string BusinessVATId { get; set; }
+
+        /**
+        The gender of the individual, as a string.
+
+        Currently either `male` or `female` are supported values.
+
+        @property (nonatomic, copy, nullable) NSString *genderString;
+        */
+        [NullAllowed, Export("genderString")]
+        string GenderString { get; set; }
+
+        /**
+        The personal address field.
+
+        @property (nonatomic, strong, nullable) STPAddress *personalAddress;
+        */
+        [NullAllowed, Export("personalAddress")]
+        string PersonalAddress { get; set; }
+
+        /**
+        The Personal Id number
+
+        @property (nonatomic, copy, nullable) NSString *personalIdNumber;
+        */
+        [NullAllowed, Export("personalIdNumber")]
+        string PersonalIdNumber { get; set; }
+
+        /**
+        The phone number of the entity.
+
+        @property (nonatomic, copy, nullable) NSString *phoneNumber;
+        */
+        [NullAllowed, Export("phoneNumber")]
+        string PhoneNumber { get; set; }
+
+        /**
+        The last four digits of the SSN of the individual.
+
+        @property (nonatomic, copy, nullable) NSString *ssnLast4;
+        */
+        [NullAllowed, Export("ssnLast4")]
+        string SsnLast4 { get; set; }
+
+        /**
+        The Tax Id Registrar
+
+        @property (nonatomic, copy, nullable) NSString *taxIdRegistrar;
+        */
+        [NullAllowed, Export("taxIdRegistrar")]
+        string TaxIdRegistrar { get; set; }
+
+        /**
+        The type of this legal entity, as a string.
+
+        Currently `individual` or `company` are supported values.
+
+        @property (nonatomic, copy, nullable) NSString *entityTypeString;
+        */
+        [NullAllowed, Export("entityTypeString")]
+        string EntityTypeStringDocument { get; set; }
+    }
+
+
+    /**
+    Parameters for supported types of verification.
+
+    @interface STPVerificationParams: NSObject<STPFormEncodable>
+    */
+    [BaseType(typeof(NSObject))]
+    interface STPVerificationParams : STPFormEncodable
+    {
+        /**
+        The file id for the uploaded verification document.
+
+        @property (nonatomic, copy, nullable) NSString *document;
+        */
+        [NullAllowed, Export("document")]
+        string Document { get; set; }
+    }
 }
