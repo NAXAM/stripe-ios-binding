@@ -1,10 +1,14 @@
 ﻿<Properties StartupConfiguration="{BC37CCEE-FA7C-4B68-B539-6CE6511435BB}|Default">
-  <MonoDevelop.Ide.Workbench />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|iPhoneSimulator" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Naxam.Stripe.iOS/Properties/AssemblyInfo.cs">
+    <Files>
+      <File FileName="Naxam.Stripe.iOS/Properties/AssemblyInfo.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.demo.StripeQs PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.1C78A9EE-D16C-4EEC-88DD-0206A1936E7D" />
+  <MonoDevelop.Ide.ItemProperties.demo.StripeQs PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.8CD190A4-1CCA-42C6-A0B8-1C940FC38A80" />
 </Properties>

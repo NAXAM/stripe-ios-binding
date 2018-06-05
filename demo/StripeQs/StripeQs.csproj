@@ -84,6 +84,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="Naxam.Stripe.iOS">
+      <HintPath>..\..\Naxam.Stripe.iOS\bin\Release\Naxam.Stripe.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />

@@ -2051,11 +2051,6 @@ namespace StripeSdk
         [Export("bancontactParamsWithAmount:name:returnURL:statementDescriptor:")]
         STPSourceParams BancontactParamsWithAmount(nuint amount, string name, string returnURL, [NullAllowed] string statementDescriptor);
 
-        // +(STPSourceParams * _Nonnull)bitcoinParamsWithAmount:(NSUInteger)amount currency:(NSString * _Nonnull)currency email:(NSString * _Nonnull)email;
-        [Static]
-        [Export("bitcoinParamsWithAmount:currency:email:")]
-        STPSourceParams BitcoinParamsWithAmount(nuint amount, string currency, string email);
-
         // +(STPSourceParams * _Nonnull)cardParamsWithCard:(STPCardParams * _Nonnull)card;
         [Static]
         [Export("cardParamsWithCard:")]
@@ -2066,10 +2061,10 @@ namespace StripeSdk
         [Export("giropayParamsWithAmount:name:returnURL:statementDescriptor:")]
         STPSourceParams GiropayParamsWithAmount(nuint amount, string name, string returnURL, [NullAllowed] string statementDescriptor);
 
-        // +(STPSourceParams * _Nonnull)idealParamsWithAmount:(NSUInteger)amount name:(NSString * _Nonnull)name returnURL:(NSString * _Nonnull)returnURL statementDescriptor:(NSString * _Nullable)statementDescriptor bank:(NSString * _Nullable)bank;
+		// +(STPSourceParams * _Nonnull)idealParamsWithAmount:(NSUInteger)amount name:(NSString * _Nullable)name returnURL:(NSString * _Nonnull)returnURL statementDescriptor:(NSString * _Nullable)statementDescriptor bank:(NSString * _Nullable)bank;
         [Static]
         [Export("idealParamsWithAmount:name:returnURL:statementDescriptor:bank:")]
-        STPSourceParams IdealParamsWithAmount(nuint amount, string name, string returnURL, [NullAllowed] string statementDescriptor, [NullAllowed] string bank);
+		STPSourceParams IdealParamsWithAmount(nuint amount, [NullAllowed] string name, string returnURL, [NullAllowed] string statementDescriptor, [NullAllowed] string bank);
 
         // +(STPSourceParams * _Nonnull)sepaDebitParamsWithName:(NSString * _Nonnull)name iban:(NSString * _Nonnull)iban addressLine1:(NSString * _Nullable)addressLine1 city:(NSString * _Nullable)city postalCode:(NSString * _Nullable)postalCode country:(NSString * _Nullable)country;
         [Static]

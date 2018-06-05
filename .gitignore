@@ -41,3 +41,4 @@ Thumbs.db
 #*.nupkg
 sharpie/build
 sharpie/Pods
+.vs/**/*

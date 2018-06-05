@@ -179,8 +179,7 @@ namespace StripeSdk
 	[Native]
 	public enum STPSourceType : long
 	{
-		Bancontact,
-		Bitcoin,
+		Bancontact,      
 		Card,
 		Giropay,
 		Ideal,
