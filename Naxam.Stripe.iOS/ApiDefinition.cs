@@ -30,7 +30,7 @@ namespace StripeSdk
 
     // typedef void (^STPJSONResponseCompletionBlock)(NSDictionary * __nullable jsonResponse, NSError * __nullable error);
     delegate void STPJSONResponseCompletionBlock([NullAllowed] NSDictionary jsonResponse, [NullAllowed] NSError error);
-
+ 
     // typedef void (^STPTokenCompletionBlock)(STPToken * _Nullable, NSError * _Nullable);
     delegate void STPTokenCompletionBlock([NullAllowed] STPToken arg0, [NullAllowed] NSError arg1);
 
@@ -144,6 +144,41 @@ namespace StripeSdk
         // -(void)createTokenWithBankAccount:(STPBankAccountParams * _Nonnull)bankAccount completion:(STPTokenCompletionBlock _Nullable)completion;
         [Export("createTokenWithBankAccount:completion:")]
         void CreateTokenWithBankAccount(STPBankAccountParams bankAccount, [NullAllowed] STPTokenCompletionBlock completion);
+    }
+
+    // typedef void (^STPPaymentIntentCompletionBlock)(STPPaymentIntent * __nullable paymentIntent, NSError * __nullable error);
+    delegate void STPPaymentIntentCompletionBlock([NullAllowed]STPPaymentIntent paymentIntent, [NullAllowed]NSError error);
+
+    // @interface PaymentIntents (STPAPIClient)
+    [Category]
+    [BaseType(typeof(STPAPIClient))]
+    interface STPAPIClient_PaymentIntents
+    {
+        /**
+        Retrieves the PaymentIntent object using the given secret. @see https://stripe.com/docs/api#retrieve_payment_intent
+
+        @param secret      The client secret of the payment intent to be retrieved. Cannot be nil.
+        @param completion  The callback to run with the returned PaymentIntent object, or an error.
+        */
+        // - (void)retrievePaymentIntentWithClientSecret:(NSString *)secret
+        //                                    completion:(STPPaymentIntentCompletionBlock)completion;
+        [Export("retrievePaymentIntentWithClientSecret:completion:")]
+        void RetrievePaymentIntentWithClientSecret(string secret, [NullAllowed] STPPaymentIntentCompletionBlock completion);
+
+        /**
+        Confirms the PaymentIntent object with the provided params object.
+
+        At a minimum, the params object must include the `clientSecret`.
+
+        @see https://stripe.com/docs/api#confirm_payment_intent
+
+        @param paymentIntentParams  The `STPPaymentIntentParams` to pass to `/confirm`
+        @param completion           The callback to run with the returned PaymentIntent object, or an error.
+        */
+        // - (void)confirmPaymentIntentWithParams:(STPPaymentIntentParams *)paymentIntentParams
+        //                             completion:(STPPaymentIntentCompletionBlock)completion;
+        [Export("confirmPaymentIntentWithParams:completion:")]
+        void ConfirmPaymentIntentWithParams(STPPaymentIntentParams paymentIntentParams, [NullAllowed] STPPaymentIntentCompletionBlock completion);
     }
 
     // @interface PII (STPAPIClient)
@@ -1685,6 +1720,28 @@ namespace StripeSdk
         [Export("initWithSource:completion:")]
         IntPtr Constructor(STPSource source, STPRedirectContextCompletionBlock completion);
 
+        /**
+        // Initializer for context from an `STPPaymentIntent`.
+
+        // This should be used when the `status` is `STPPaymentIntentStatusRequiresSourceAction`.
+        // If the next action involves a redirect, this init method will return a non-nil object.
+
+        // @param paymentIntent The STPPaymentIntent that needs a redirect.
+        // @param completion A block to fire when the action is believed to have
+        // been completed.
+
+        // @return nil if the provided PaymentIntent does not need a redirect. Otherwise
+        // a new context object.
+
+        // @note Execution of the completion block does not necessarily mean the user
+        // successfully performed the redirect action.
+        // */
+        // - (nullable instancetype)initWithPaymentIntent:(STPPaymentIntent *)paymentIntent
+        //                                     completion:(STPRedirectContextPaymentIntentCompletionBlock)completion;
+        [Export("initWithPaymentIntent:completion:")]
+        IntPtr Constructor(STPPaymentIntent paymentIntent, STPRedirectContextPaymentIntentCompletionBlock completion);
+
+
         // -(void)startRedirectFlowFromViewController:(UIViewController * _Nonnull)presentingViewController;
         [Export("startRedirectFlowFromViewController:")]
         void StartRedirectFlowFromViewController(UIViewController presentingViewController);
@@ -2110,6 +2167,46 @@ namespace StripeSdk
         [Static]
         [Export("visaCheckoutParamsWithCallId:")]
         STPSourceParams VisaCheckoutParamsWithCallId(string callId);
+
+        // /**
+        //  Create params for an EPS source
+        //  @see https://stripe.com/docs/sources/eps
+
+        //  @param amount                  The amount to charge the customer.
+        //  @param name                    The full name of the account holder.
+        //  @param returnURL               The URL the customer should be redirected to
+        //  after the authorization process.
+        //  @param statementDescriptor     A custom statement descriptor for the
+        //  payment (optional).
+
+        //  @return An STPSourceParams object populated with the provided values.
+        //  */
+        // + (STPSourceParams *)epsParamsWithAmount:(NSUInteger)amount
+        //                                     name:(NSString *)name
+        //                                returnURL:(NSString *)returnURL
+        //                      statementDescriptor:(nullable NSString *)statementDescriptor;
+        [Static]
+        [Export("epsParamsWithAmount:name:returnURL:statementDescriptor:")]
+        STPSourceParams EpsParamsWithAmount(uint amount, string name, string returnUrl, string statementDescriptor);
+
+        // /**
+        //  Create params for a Multibanco source
+        //  @see https://stripe.com/docs/sources/multibanco
+
+        //  @param amount      The amount to charge the customer.
+        //  @param returnURL   The URL the customer should be redirected to after the
+        //  authorization process.
+        //  @param email       The full email address of the customer.
+
+        //  @return An STPSourceParams object populated with the provided values.
+        //  */
+        // + (STPSourceParams *)multibancoParamsWithAmount:(NSUInteger)amount
+        //                                       returnURL:(NSString *)returnURL
+        //                                           email:(NSString *)email;
+        [Static]
+        [Export("multibancoParamsWithAmount:returnURL:email:")]
+        STPSourceParams MultibancoParamsWithAmount(string callId, string returnURL, string email);
+
 
     }
 
@@ -2574,4 +2671,188 @@ namespace StripeSdk
         [NullAllowed, Export("document")]
         string Document { get; set; }
     }
+
+    // @interface STPPaymentIntent : NSObject<STPAPIResponseDecodable>
+    [BaseType(typeof(NSObject)), DisableDefaultCtor]
+    interface STPPaymentIntent : STPAPIResponseDecodable {
+        // /**
+        // The Stripe ID of the PaymentIntent.
+        // */
+        // @property (nonatomic, readonly) NSString *stripeId;
+        [Export("stripeId")]
+        string StripeId { get; }
+
+        // /**
+        // The client secret used to fetch this PaymentIntent
+        // */
+        // @property (nonatomic, readonly) NSString *clientSecret;
+        [Export("clientSecret")]
+        string ClientSecret { get; }
+
+        // /**
+        // Amount intended to be collected by this PaymentIntent.
+        // */
+        // @property (nonatomic, readonly) NSNumber *amount;
+        [Export("amount")]
+        float Amount { get; }
+
+        // /**
+        // If status is `STPPaymentIntentStatusCanceled`, when the PaymentIntent was canceled.
+        // */
+        // @property (nonatomic, nullable, readonly) NSDate *canceledAt;
+        [Export("canceledAt")]
+        DateTime CanceledAt { get; }
+
+        // /**
+        // Capture method of this PaymentIntent
+        // */
+        // @property (nonatomic, readonly) STPPaymentIntentCaptureMethod captureMethod;
+        [Export("captureMethod")]
+        STPPaymentIntentCaptureMethod CaptureMethod { get; }
+
+        // /**
+        // Confirmation method of this PaymentIntent
+        // */
+        // @property (nonatomic, readonly) STPPaymentIntentConfirmationMethod confirmationMethod;
+        [Export("confirmationMethod")]
+        STPPaymentIntentConfirmationMethod ConfirmationMethod { get; }
+
+        // /**
+        // When the PaymentIntent was created.
+        // */
+        // @property (nonatomic, nullable, readonly) NSDate *created;
+        [Export("created")]
+        DateTime created { get; }
+
+        // /**
+        // The currency associated with the PaymentIntent.
+        // */
+        // @property (nonatomic, readonly) NSString *currency;
+        [Export("currency")]
+        string Currency { get; }
+
+        // /**
+        // The `description` field of the PaymentIntent.
+        // An arbitrary string attached to the object. Often useful for displaying to users.
+        // */
+        // @property (nonatomic, nullable, readonly) NSString *stripeDescription;
+        [Export("stripeDescription")]
+        string StripeDescription { get; }
+
+        // /**
+        // Whether or not this PaymentIntent was created in livemode.
+        // */
+        // @property (nonatomic, readonly) BOOL livemode;
+        [Export("livemode")]
+        bool Livemode { get; }
+
+        // /**
+        // Email address that the receipt for the resulting payment will be sent to.
+        // */
+        // @property (nonatomic, nullable, readonly) NSString *receiptEmail;
+        [Export("receiptEmail")]
+        string ReceiptEmail { get; }
+
+        // /**
+        // The URL to redirect your customer back to after they authenticate or cancel their
+        // payment on the payment method’s app or site.
+
+        // This should be a URL that your app handles if the PaymentIntent is going to
+        // be confirmed in your app, and it has a redirect authorization flow.
+        // */
+        // @property (nonatomic, nullable, readonly) NSURL *returnUrl;
+        [Export("returnUrl")]
+        NSUrl ReturnUrl { get; }
+
+        // /**
+        // The Stripe ID of the Source used in this PaymentIntent.
+        // */
+        // @property (nonatomic, nullable, readonly) NSString *sourceId;
+        [Export("sourceId")]
+        string SourceId { get; }
+
+        // /**
+        // Status of the PaymentIntent
+        // */
+        // @property (nonatomic, readonly) STPPaymentIntentStatus status;
+        [Export("status")]
+        STPPaymentIntentStatus Status { get; }
+    }
+
+    // @interface STPPaymentIntentParams : NSObject<STPFormEncodable>
+    [BaseType(typeof(NSObject))]
+    interface STPPaymentIntentParams : STPFormEncodable {
+        // /**
+        // Initialize this `STPPaymentIntentParams` with a `clientSecret`, which is the only required
+        // field.
+
+        // @param clientSecret the client secret for this PaymentIntent
+        // */
+        // - (instancetype)initWithClientSecret:(NSString *)clientSecret;
+        [Export("initWithClientSecret:")]
+        IntPtr Constructor(string clientSecret);
+
+        // /**
+        // The Stripe id of the PaymentIntent, extracted from the clientSecret.
+        // */
+        // @property (nonatomic, copy, nullable, readonly) NSString *stripeId;
+        [Export("stripeId")]
+        [return: NullAllowed]
+        string StripeId {get;}
+
+        // /**
+        // The client secret of the PaymentIntent. Required
+        // */
+        // @property (nonatomic, copy, readwrite) NSString *clientSecret;
+        [Export("clientSecret")]
+        string ClientSecret {get; set;}
+
+        // /**
+        // Provide a supported `STPSourceParams` object into here, and Stripe will create a Source
+        // during PaymentIntent confirmation.
+
+        // @note alternative to `sourceId`
+        // */
+        // @property (nonatomic, strong, nullable, readwrite) STPSourceParams *sourceParams;
+        [Export("sourceParams"), NullAllowed]
+        STPSourceParams SourceParams {get; set;}
+
+        // /**
+        // Provide an already created Source's id, and it will be used to confirm the PaymentIntent.
+
+        // @note alternative to `sourceParams`
+        // */
+        // @property (nonatomic, copy, nullable, readwrite) NSString *sourceId;
+        [Export("sourceId"), NullAllowed]
+        string SourceId {get; set;}
+
+        // /**
+        // Email address that the receipt for the resulting payment will be sent to.
+        // */
+        // @property (nonatomic, copy, nullable, readwrite) NSString *receiptEmail;
+        [Export("receiptEmail"), NullAllowed]
+        string ReceiptEmail {get; set;}
+
+        // /**
+        // `@YES` to save this PaymentIntent’s Source to the associated Customer,
+        // if the Source is not already attached.
+
+        // This should be a boolean NSNumber, so that it can be `nil`
+        // */
+        // @property (nonatomic, strong, nullable, readwrite) NSNumber *saveSourceToCustomer;
+        [Export("saveSourceToCustomer"), NullAllowed]
+        float SaveSourceToCustomer {get; set;}
+
+        // /**
+        // The URL to redirect your customer back to after they authenticate or cancel
+        // their payment on the payment method’s app or site.
+        // This should probably be a URL that opens your iOS app.
+        // */
+        // @property (nonatomic, copy, nullable, readwrite) NSString *returnUrl;
+        [Export("returnUrl"), NullAllowed]
+        string ReturnUrl {get; set;}
+    }
+
+    //typedef void(^STPRedirectContextPaymentIntentCompletionBlock)(NSString *clientSecret, NSError * __nullable error);
+    delegate void STPRedirectContextPaymentIntentCompletionBlock(string clientSecret, [NullAllowed] NSError error);
 }

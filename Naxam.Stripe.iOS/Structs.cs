@@ -40,7 +40,8 @@ namespace StripeSdk
 	{
 		None,
 		Zip,
-		Full
+		Full,
+		FieldsName,
 	}
 
 	[Native]
@@ -186,7 +187,10 @@ namespace StripeSdk
 		SEPADebit,
 		Sofort,
 		ThreeDSecure,
-		Unknown
+    	EPS,
+    	Multibanco,
+		Unknown,
+
 	}
 
 	[Native]
@@ -200,5 +204,99 @@ namespace StripeSdk
         STPEphemeralKeyDecodingError = 1000,
 		CheckoutUnknownError = 5000,
 		CheckoutTooManyAttemptsError = 5001,
+	}
+
+	// /**
+	// Status types for an STPPaymentIntent
+	// */
+	// typedef NS_ENUM(NSInteger, STPPaymentIntentStatus) {
+	[Native]
+	public enum STPPaymentIntentStatus: long {
+	// /**
+	// 	Unknown status
+	// 	*/
+		Unknown,
+
+	// /**
+	// 	This PaymentIntent requires a Source
+	// 	*/
+		RequiresSource,
+
+	// /**
+	// 	This PaymentIntent needs to be confirmed
+	// 	*/
+		RequiresConfirmation,
+
+	// /**
+	// 	The selected Source requires additional authentication steps.
+	// 	Additional actions found via `next_source_action`
+	// 	*/
+		RequiresSourceAction,
+
+	// /**
+	// 	Stripe is processing this PaymentIntent
+	// 	*/
+		Processing,
+
+	// /**
+	// 	The payment has succeeded
+	// 	*/
+		Succeeded,
+
+	// /**
+	// 	Indicates the payment must be captured, for STPPaymentIntentCaptureMethodManual
+	// 	*/
+		RequiresCapture,
+
+	// /**
+	// 	This PaymentIntent was canceled and cannot be changed.
+	// 	*/
+		Canceled,
+	// };
+	}
+
+	// /**
+	// Capture methods for a STPPaymentIntent
+	// */
+	// typedef NS_ENUM(NSInteger, STPPaymentIntentCaptureMethod) {
+	[Native]
+	public enum STPPaymentIntentCaptureMethod: long {
+	// /**
+	// 	Unknown capture method
+	// 	*/
+		Unknown,
+
+	// /**
+	// 	The PaymentIntent will be automatically captured
+	// 	*/
+		Automatic,
+
+	// /**
+	// 	The PaymentIntent must be manually captured once it has the status
+	// 	`STPPaymentIntentStatusRequiresCapture`
+	// 	*/
+		Manual,
+	}
+
+	// /**
+	// Confirmation methods for a STPPaymentIntent
+	// */
+	// typedef NS_ENUM(NSInteger, STPPaymentIntentConfirmationMethod) {
+	[Native]
+	public enum STPPaymentIntentConfirmationMethod: long {
+	// /**
+	// 	Unknown confirmation method
+	// 	*/
+		Unknown,
+
+	// /**
+	// 	Confirmed via publishable key
+	// 	*/
+		Publishable,
+
+	// /**
+	// 	Confirmed via secret key
+	// 	*/
+		Secret,
 	}
 }

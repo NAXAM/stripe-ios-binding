@@ -4,14 +4,14 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Stripe.iOS</id>
-        <version>13.0.2</version>
+        <version>13.1.0</version>
         <authors>NAXAM CO.,LTD</authors>
         <owners>NAXAM CO.,LTD</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Naxam - Stripe for iOS</title>
         <summary>Xamarin.iOS Binding Library - Stripe</summary>
         <description>Xamarin.iOS Binding Library - Stripe</description>
-        <releaseNotes>Stripe for iOS v12.1.2</releaseNotes>
+        <releaseNotes>Stripe for iOS v13.1.0</releaseNotes>
         <iconUrl>https://avatars3.githubusercontent.com/u/856813</iconUrl>
         <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>https://github.com/NAXAM/stripe-ios-binding</projectUrl>
