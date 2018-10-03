@@ -2701,7 +2701,7 @@ namespace StripeSdk
         // */
         // @property (nonatomic, nullable, readonly) NSDate *canceledAt;
         [Export("canceledAt")]
-        DateTime CanceledAt { get; }
+        NSDate CanceledAt { get; }
 
         // /**
         // Capture method of this PaymentIntent
@@ -2722,7 +2722,7 @@ namespace StripeSdk
         // */
         // @property (nonatomic, nullable, readonly) NSDate *created;
         [Export("created")]
-        DateTime created { get; }
+        NSDate created { get; }
 
         // /**
         // The currency associated with the PaymentIntent.
