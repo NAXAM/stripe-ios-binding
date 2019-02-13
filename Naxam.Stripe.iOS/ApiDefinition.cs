@@ -18,6 +18,7 @@ namespace StripeSdk
     partial interface ISTPPaymentContextDelegate { }
     partial interface ISTPEphemeralKeyProvider { }
     partial interface ISTPPaymentMethodsViewControllerDelegate { }
+    partial interface ISTPAddCardViewControllerDelegate { }
 
     // typedef void (^STPVoidBlock)(void);
     delegate void STPVoidBlock();
@@ -808,7 +809,7 @@ namespace StripeSdk
 
         [Wrap("WeakDelegate")]
         [NullAllowed]
-        STPAddCardViewControllerDelegate Delegate { get; set; }
+        ISTPAddCardViewControllerDelegate Delegate { get; set; }
 
         // @property (nonatomic, weak, nullable) id<STPAddCardViewControllerDelegate>delegate;
         [NullAllowed, Export("delegate", ArgumentSemantic.Weak)]
@@ -838,6 +839,7 @@ namespace StripeSdk
         void DidCancel(STPAddCardViewController addCardViewController);
 
         // @required -(void)addCardViewController:(STPAddCardViewController * _Nonnull)addCardViewController didCreateToken:(STPToken * _Nonnull)token completion:(STPErrorBlock _Nonnull)completion;
+        [Abstract]
         [Export("addCardViewController:didCreateToken:completion:")]
         void DidCreateToken(STPAddCardViewController addCardViewController, STPToken token, STPErrorBlock completion);
 
@@ -861,6 +863,7 @@ namespace StripeSdk
                     didCreateSource:(STPSource *)source
                         completion:(STPErrorBlock)completion;
         */
+        [Abstract]
         [Export("addCardViewController:didCreateSource:completion:")]
         void DidCreateSource(STPAddCardViewController addCardViewController, STPSource token, STPErrorBlock completion);
     }
