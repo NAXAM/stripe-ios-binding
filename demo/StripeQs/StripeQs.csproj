@@ -117,7 +117,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Naxam.Stripe.iOS\Naxam.Stripe.iOS.csproj">
       <Project>{2B73D466-860C-42CD-AA68-0F8BE3CB4398}</Project>
-      <Name>Naxam.Stripe.iOS</Name>
+      <Name>Stripe.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

@@ -3,23 +3,23 @@
     xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <!-- Required elements-->
-        <id>Naxam.Stripe.iOS</id>
-        <version>13.1.0</version>
-        <authors>NAXAM CO.,LTD</authors>
-        <owners>NAXAM CO.,LTD</owners>
+        <id>Stripe.iOS</id>
+        <version>22.5.0</version>
+        <authors>tuyen</authors>
+        <owners>tuyen</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <title>Naxam - Stripe for iOS</title>
+        <title>Stripe for iOS</title>
         <summary>Xamarin.iOS Binding Library - Stripe</summary>
         <description>Xamarin.iOS Binding Library - Stripe</description>
-        <releaseNotes>Stripe for iOS v13.1.0</releaseNotes>
+        <releaseNotes>Stripe for iOS v22.5.0</releaseNotes>
         <iconUrl>https://avatars3.githubusercontent.com/u/856813</iconUrl>
         <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>https://github.com/NAXAM/stripe-ios-binding</projectUrl>
-        <copyright>Copyright (c) 2017-present NAXAM</copyright>
+        <copyright>Copyright (c) 2022 tuyen-vuduc</copyright>
         <tags>xamarin, xamarin-ios, Xamarin.iOS, stripe</tags>
     </metadata>
     <!-- Optional 'files' node -->
     <files>
-        <file src="Naxam.Stripe.iOS/bin/Release/Naxam.Stripe.iOS.dll" target="lib/Xamarin.iOS10/Naxam.Stripe.iOS.dll" />
+        <file src="libs/Stripe.iOS/bin/Release/Stripe.iOS.dll" target="lib/Xamarin.iOS10/Stripe.iOS.dll" />
     </files>
 </package>

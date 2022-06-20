@@ -1,0 +1,53 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
+// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name StripeIdentity
+import AVKit
+import Accelerate
+import CoreGraphics
+import CoreML
+import CoreVideo
+import Foundation
+import SafariServices
+import StripeCameraCore
+@_exported import StripeCore
+@_exported import StripeIdentity
+import StripeUICore
+import Swift
+import UIKit
+import Vision
+import WebKit
+import _Concurrency
+@_hasMissingDesignatedInitializers final public class IdentityVerificationSheet {
+  @frozen public enum VerificationFlowResult {
+    case flowCompleted
+    case flowCanceled
+    case flowFailed(error: Swift.Error)
+  }
+  public struct Configuration {
+    public var brandLogo: UIKit.UIImage
+    public init(brandLogo: UIKit.UIImage)
+  }
+  final public let verificationSessionClientSecret: Swift.String
+  @available(iOS 14.3, *)
+  convenience public init(verificationSessionClientSecret: Swift.String)
+  @available(iOS 13, *)
+  convenience public init(verificationSessionId: Swift.String, ephemeralKeySecret: Swift.String, configuration: StripeIdentity.IdentityVerificationSheet.Configuration)
+  @available(iOSApplicationExtension, unavailable)
+  final public func present(from presentingViewController: UIKit.UIViewController, completion: @escaping (StripeIdentity.IdentityVerificationSheet.VerificationFlowResult) -> Swift.Void)
+  @objc deinit
+}
+public enum IdentityVerificationSheetError : Swift.Error {
+  case invalidClientSecret
+  case unknown(debugDescription: Swift.String)
+}
+extension StripeIdentity.IdentityVerificationSheetError : Foundation.LocalizedError {
+  public var localizedDescription: Swift.String {
+    get
+  }
+}
+extension StripeIdentity.IdentityVerificationSheetError : Swift.CustomDebugStringConvertible {
+  public var debugDescription: Swift.String {
+    get
+  }
+}
+extension StripeIdentity.IdentityVerificationSheet.VerificationFlowResult : Swift.Sendable {}

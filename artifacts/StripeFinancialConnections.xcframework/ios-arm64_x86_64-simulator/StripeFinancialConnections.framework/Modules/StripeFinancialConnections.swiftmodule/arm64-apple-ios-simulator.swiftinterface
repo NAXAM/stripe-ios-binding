@@ -1,0 +1,206 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
+// swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name StripeFinancialConnections
+import AuthenticationServices
+import CoreMedia
+import Foundation
+@_exported import StripeCore
+@_exported import StripeFinancialConnections
+import StripeUICore
+import Swift
+import UIKit
+import _Concurrency
+extension StripeCore.StripeAPI {
+  public struct FinancialConnectionsAccount {
+    public struct BalanceRefresh {
+      @frozen public enum Status : Swift.String, StripeCore.SafeEnumCodable, Swift.Equatable {
+        case failed
+        case pending
+        case succeeded
+        case unparsable
+        public init?(rawValue: Swift.String)
+        public typealias RawValue = Swift.String
+        public var rawValue: Swift.String {
+          get
+        }
+      }
+      public let lastAttemptedAt: Swift.Int
+      public let status: StripeCore.StripeAPI.FinancialConnectionsAccount.BalanceRefresh.Status
+    }
+    public struct CashBalance {
+    }
+    public struct CreditBalance {
+    }
+    public struct Balance {
+      @frozen public enum ModelType : Swift.String, StripeCore.SafeEnumCodable, Swift.Equatable {
+        case cash
+        case credit
+        case unparsable
+        public init?(rawValue: Swift.String)
+        public typealias RawValue = Swift.String
+        public var rawValue: Swift.String {
+          get
+        }
+      }
+      public let asOf: Swift.Int
+      public let cash: StripeCore.StripeAPI.FinancialConnectionsAccount.CashBalance?
+      public let credit: StripeCore.StripeAPI.FinancialConnectionsAccount.CreditBalance?
+      public let current: [Swift.String : Swift.Int]
+      public let type: StripeCore.StripeAPI.FinancialConnectionsAccount.Balance.ModelType
+    }
+    @frozen public enum Category : Swift.String, StripeCore.SafeEnumCodable, Swift.Equatable {
+      case cash
+      case credit
+      case investment
+      case other
+      case unparsable
+      public init?(rawValue: Swift.String)
+      public typealias RawValue = Swift.String
+      public var rawValue: Swift.String {
+        get
+      }
+    }
+    @frozen public enum Permissions : Swift.String, StripeCore.SafeEnumCodable, Swift.Equatable {
+      case balances
+      case ownership
+      case paymentMethod
+      case transactions
+      case accountNumbers
+      case unparsable
+      public init?(rawValue: Swift.String)
+      public typealias RawValue = Swift.String
+      public var rawValue: Swift.String {
+        get
+      }
+    }
+    @frozen public enum Status : Swift.String, StripeCore.SafeEnumCodable, Swift.Equatable {
+      case active
+      case disconnected
+      case inactive
+      case unparsable
+      public init?(rawValue: Swift.String)
+      public typealias RawValue = Swift.String
+      public var rawValue: Swift.String {
+        get
+      }
+    }
+    @frozen public enum Subcategory : Swift.String, StripeCore.SafeEnumCodable, Swift.Equatable {
+      case checking
+      case creditCard
+      case lineOfCredit
+      case mortgage
+      case other
+      case savings
+      case unparsable
+      public init?(rawValue: Swift.String)
+      public typealias RawValue = Swift.String
+      public var rawValue: Swift.String {
+        get
+      }
+    }
+    @frozen public enum SupportedPaymentMethodTypes : Swift.String, StripeCore.SafeEnumCodable, Swift.Equatable {
+      case link
+      case usBankAccount
+      case unparsable
+      public init?(rawValue: Swift.String)
+      public typealias RawValue = Swift.String
+      public var rawValue: Swift.String {
+        get
+      }
+    }
+    public let balance: StripeCore.StripeAPI.FinancialConnectionsAccount.Balance?
+    public let balanceRefresh: StripeCore.StripeAPI.FinancialConnectionsAccount.BalanceRefresh?
+    public let displayName: Swift.String?
+    public let institutionName: Swift.String
+    public let last4: Swift.String?
+    public let category: StripeCore.StripeAPI.FinancialConnectionsAccount.Category
+    public let created: Swift.Int
+    public let id: Swift.String
+    public let livemode: Swift.Bool
+    public let permissions: [StripeCore.StripeAPI.FinancialConnectionsAccount.Permissions]?
+    public let status: StripeCore.StripeAPI.FinancialConnectionsAccount.Status
+    public let subcategory: StripeCore.StripeAPI.FinancialConnectionsAccount.Subcategory
+    public let supportedPaymentMethodTypes: [StripeCore.StripeAPI.FinancialConnectionsAccount.SupportedPaymentMethodTypes]
+  }
+}
+@_hasMissingDesignatedInitializers final public class FinancialConnectionsSheet {
+  @frozen public enum Result {
+    case completed(session: StripeCore.StripeAPI.FinancialConnectionsSession)
+    case failed(error: Swift.Error)
+    case canceled
+  }
+  @frozen public enum TokenResult {
+    case completed(result: (session: StripeCore.StripeAPI.FinancialConnectionsSession, token: StripeCore.StripeAPI.BankAccountToken?))
+    case failed(error: Swift.Error)
+    case canceled
+  }
+  final public let financialConnectionsSessionClientSecret: Swift.String
+  final public var apiClient: StripeCore.STPAPIClient
+  convenience public init(financialConnectionsSessionClientSecret: Swift.String)
+  final public func presentForToken(from presentingViewController: UIKit.UIViewController, completion: @escaping (StripeFinancialConnections.FinancialConnectionsSheet.TokenResult) -> ())
+  final public func present(from presentingViewController: UIKit.UIViewController, completion: @escaping (StripeFinancialConnections.FinancialConnectionsSheet.Result) -> ())
+  @objc deinit
+}
+extension StripeCore.StripeAPI {
+  public struct BankAccountToken {
+    public struct BankAccount {
+      public let id: Swift.String
+      public let accountHolderName: Swift.String?
+      public let allowsDebits: Swift.Bool?
+      public let bankName: Swift.String?
+      public let country: Swift.String
+      public let currency: Swift.String
+      public let debitAgreementShownAndAccepted: Swift.Bool?
+      public let debitAgreementType: Swift.String?
+      public let fingerprint: Swift.String?
+      public let last4: Swift.String
+      public let routingNumber: Swift.String?
+      public let status: Swift.String
+    }
+    public let id: Swift.String
+    public let bankAccount: StripeCore.StripeAPI.BankAccountToken.BankAccount
+    public let clientIp: Swift.String?
+    public let livemode: Swift.Bool
+    public let used: Swift.Bool
+  }
+}
+public enum FinancialConnectionsSheetError : Swift.Error, Foundation.LocalizedError {
+  case unknown(debugDescription: Swift.String)
+  public var localizedDescription: Swift.String {
+    get
+  }
+}
+extension StripeCore.StripeAPI {
+  public struct FinancialConnectionsSession {
+    public struct AccountList {
+      public let data: [StripeCore.StripeAPI.FinancialConnectionsAccount]
+      public let hasMore: Swift.Bool
+    }
+    public let clientSecret: Swift.String
+    public let id: Swift.String
+    public let accounts: StripeCore.StripeAPI.FinancialConnectionsSession.AccountList
+    public let livemode: Swift.Bool
+    public init(from decoder: Swift.Decoder) throws
+  }
+}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.BalanceRefresh.Status : Swift.Hashable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.BalanceRefresh.Status : Swift.RawRepresentable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.BalanceRefresh.Status : Swift.Sendable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Balance.ModelType : Swift.Hashable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Balance.ModelType : Swift.RawRepresentable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Balance.ModelType : Swift.Sendable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Category : Swift.Hashable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Category : Swift.RawRepresentable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Category : Swift.Sendable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Permissions : Swift.Hashable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Permissions : Swift.RawRepresentable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Permissions : Swift.Sendable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Status : Swift.Hashable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Status : Swift.RawRepresentable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Status : Swift.Sendable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Subcategory : Swift.Hashable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Subcategory : Swift.RawRepresentable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.Subcategory : Swift.Sendable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.SupportedPaymentMethodTypes : Swift.Hashable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.SupportedPaymentMethodTypes : Swift.RawRepresentable {}
+extension StripeCore.StripeAPI.FinancialConnectionsAccount.SupportedPaymentMethodTypes : Swift.Sendable {}
